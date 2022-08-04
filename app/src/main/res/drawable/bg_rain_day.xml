@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_rain_day_0" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_1" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_2" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_3" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_4" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_5" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_6" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_7" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_8" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_9" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_10" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_11" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_12" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_13" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_14" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_15" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_16" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_17" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_18" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_19" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_20" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_21" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_22" android:duration="15"/>
+    <item android:drawable="@drawable/bg_rain_day_23" android:duration="15"/>
+</animation-list>
