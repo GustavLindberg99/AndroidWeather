@@ -92,9 +92,9 @@ public abstract class WeatherWidget extends Widget{
         };
         for(int i = 0; i < 6; i++){
             final String dayOfWeek = context.getString(daysOfWeek[(currentDayOfTheWeek + i) % 7]);
-            final int weatherCode = weatherCodes[i];
-            final double minTemperature = minTemperatures[i];
-            final double maxTemperature = maxTemperatures[i];
+            final int weatherCode = weatherCodes[i + 1];
+            final double minTemperature = minTemperatures[i + 1];
+            final double maxTemperature = maxTemperatures[i + 1];
 
             final String dayOrNight = (weatherCode <= 2 || weatherCode / 10 == 8) ? "_day" : "";
             final @DrawableRes int weatherImage = context.getResources().getIdentifier("wmo_" + weatherCode + dayOrNight, "drawable", context.getPackageName());

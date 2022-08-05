@@ -380,7 +380,23 @@ public class WeatherFragment extends Fragment{
 
         //Daily
         for(int i = 0; i < 7; i++){
-            final String dayOrNight = (data.dailyWeatherCode[i] <= 2 || data.dailyWeatherCode[i] / 10 == 8) ? "_day" : "";
+            boolean isEvening;
+            if(i != 0){
+                isEvening = false;
+            }
+            else if(data.sunsets[0] == null){
+                if(now.get(Calendar.MONTH) >= Calendar.APRIL && now.get(Calendar.MONTH) <= Calendar.SEPTEMBER){
+                    isEvening = data.latitude < 0;
+                }
+                else{
+                    isEvening = data.latitude > 0;
+                }
+            }
+            else{
+                isEvening = now.getTimeInMillis() > data.sunsets[0].getTimeInMillis();
+            }
+
+            final String dayOrNight = (data.dailyWeatherCode[i] <= 2 || data.dailyWeatherCode[i] / 10 == 8) ? (isEvening ? "_night" : "_day") : "";
             this._dayTemperatures[i].setText(String.format(Locale.US, "%s/%s", Settings.UnitFormatter.temperature(this.requireActivity(), data.minTemperature[i]), Settings.UnitFormatter.temperature(this.requireActivity(), data.maxTemperature[i])));
             this._dayWeathers[i].setImageResource(this.getResources().getIdentifier("wmo_" + data.dailyWeatherCode[i] + dayOrNight, "drawable", this.requireActivity().getPackageName()));
             this._dayWeathers[i].setContentDescription(this.getString(this.getResources().getIdentifier("wmo" + data.dailyWeatherCode[i], "string", this.requireActivity().getPackageName())));
