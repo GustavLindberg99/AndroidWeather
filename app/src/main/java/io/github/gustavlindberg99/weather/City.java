@@ -16,6 +16,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -233,32 +236,37 @@ public class City{
     }
 
     public void updateWeatherFromServer(Runnable successCallback, Runnable errorCallback){
-        final String url = "https://api.open-meteo.com/v1/forecast?latitude=" + this.latitude + "&longitude=" + this.longitude + "&timezone=" + this.timezone + "&current_weather=true&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,precipitation,pressure_msl,shortwave_radiation,cloudcover,dewpoint_2m,winddirection_10m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset";
-        RequestQueue queue = Volley.newRequestQueue(this._context);
+        try{
+            final String url = "https://api.open-meteo.com/v1/forecast?latitude=" + URLEncoder.encode(String.valueOf(this.latitude), StandardCharsets.UTF_8.name()) + "&longitude=" + URLEncoder.encode(String.valueOf(this.longitude), StandardCharsets.UTF_8.name()) + "&timezone=" + URLEncoder.encode(this.timezone, StandardCharsets.UTF_8.name()) + "&current_weather=true&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,precipitation,pressure_msl,shortwave_radiation,cloudcover,dewpoint_2m,winddirection_10m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset";
+            RequestQueue queue = Volley.newRequestQueue(this._context);
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, (String response) -> {
-            try{
-                //Fix the current time so that it shows the actual current time rather than the last whole hour
-                JSONObject data = new JSONObject(response);
-                JSONObject currentWeather = data.getJSONObject("current_weather");
-                final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
-                dateFormat.setTimeZone(TimeZone.getTimeZone(this.timezone));
-                currentWeather.put("time", dateFormat.format(new Date()).replace(" ", "T"));
+            StringRequest request = new StringRequest(Request.Method.GET, url, (String response) -> {
+                try{
+                    //Fix the current time so that it shows the actual current time rather than the last whole hour
+                    JSONObject data = new JSONObject(response);
+                    JSONObject currentWeather = data.getJSONObject("current_weather");
+                    final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+                    dateFormat.setTimeZone(TimeZone.getTimeZone(this.timezone));
+                    currentWeather.put("time", dateFormat.format(new Date()).replace(" ", "T"));
 
-                //Save the JSON data
-                this.weatherData = new WeatherData(data.toString(), this.timezone);
-                this.updateCachedWeather();
-                successCallback.run();
-            }
-            catch(JSONException | ParseException ignore){
-                errorCallback.run();
-            }
-        }, (VolleyError error) ->
-            //The error handler is also run on 4xx errors (this was unclear from the documentation so I tested it)
-            errorCallback.run()
-        );
+                    //Save the JSON data
+                    this.weatherData = new WeatherData(data.toString(), this.timezone);
+                    this.updateCachedWeather();
+                    successCallback.run();
+                }
+                catch(JSONException | ParseException ignore){
+                    errorCallback.run();
+                }
+            }, (VolleyError error) ->
+                //The error handler is also run on 4xx errors (this was unclear from the documentation so I tested it)
+                errorCallback.run()
+            );
 
-        queue.add(request);
+            queue.add(request);
+        }
+        catch(UnsupportedEncodingException ignore){
+            //Most useless error check ever
+        }
     }
 
     public Bundle toBundle(){

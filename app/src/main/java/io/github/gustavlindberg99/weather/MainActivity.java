@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private DotIndicator _dotIndicator;
     private boolean _askForLocationPermission = true;
 
+    @SuppressWarnings("deprecation")
     private class FragmentAdapter extends FragmentPagerAdapter{
         private @Nullable WeatherFragment _currentLocationFragment = null;
         private final BiMap<Integer, WeatherFragment> _otherLocationFragments = HashBiMap.create();

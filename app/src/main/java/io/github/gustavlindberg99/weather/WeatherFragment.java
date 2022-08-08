@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -29,6 +28,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -173,13 +173,22 @@ public class WeatherFragment extends Fragment{
 
     @SuppressLint("SetTextI18n")
     private void updateWeather(@Nullable WeatherData data){
-        if(this.getActivity() == null || data == null){
+        if(this.getActivity() == null){
             return;
         }
 
         this._locationView.setText(this._city.name);
         if(this._city.isCurrentLocation()){
             this._locationView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.position, 0, 0, 0);
+        }
+
+        if(data == null){
+            this._backgroundImage.setImageResource(R.color.skyBlue);
+            final @ColorInt int color = this.requireActivity().getColor(R.color.skyBlue);
+            this._backgroundGradient.setColorFilter(color);
+            this._backgroundColor.setColorFilter(color);
+
+            return;
         }
 
         final Calendar now = data.now;
@@ -236,16 +245,9 @@ public class WeatherFragment extends Fragment{
                     if(backgroundDrawable instanceof AnimationDrawable){
                         ((AnimationDrawable) backgroundDrawable).start();
                     }
-                    final Bitmap bitmap = BitmapFactory.decodeResource(this.requireActivity().getResources(), removeAnimation(backgroundImage));
-                    @ColorInt int averageColor = Bitmap.createScaledBitmap(bitmap, 1, 2, false).getPixel(0, 1);
-                    float[] hsv = new float[3];
-                    Color.colorToHSV(averageColor, hsv);
-                    if(hsv[2] > 0.7f){
-                        hsv[2] = 0.7f;
-                        averageColor = Color.HSVToColor(hsv);
-                    }
-                    this._backgroundGradient.setColorFilter(averageColor);
-                    this._backgroundColor.setColorFilter(averageColor);
+                    final @ColorInt int medianColor = this.medianColor(backgroundImage);    //Use the median instead of the average, otherwise the stars in the clear night background will cause the average color to be very bright
+                    this._backgroundGradient.setColorFilter(medianColor);
+                    this._backgroundColor.setColorFilter(medianColor);
                 }
             }
         }
@@ -381,10 +383,7 @@ public class WeatherFragment extends Fragment{
         //Daily
         for(int i = 0; i < 7; i++){
             boolean isEvening;
-            if(i != 0){
-                isEvening = false;
-            }
-            else if(data.sunsets[0] == null){
+            if((i == 0 || data.sunrises[i] == null) && data.sunsets[i] == null){
                 if(now.get(Calendar.MONTH) >= Calendar.APRIL && now.get(Calendar.MONTH) <= Calendar.SEPTEMBER){
                     isEvening = data.latitude < 0;
                 }
@@ -393,7 +392,7 @@ public class WeatherFragment extends Fragment{
                 }
             }
             else{
-                isEvening = now.getTimeInMillis() > data.sunsets[0].getTimeInMillis();
+                isEvening = i == 0 && now.getTimeInMillis() > data.sunsets[0].getTimeInMillis();
             }
 
             final String dayOrNight = (data.dailyWeatherCode[i] <= 2 || data.dailyWeatherCode[i] / 10 == 8) ? (isEvening ? "_night" : "_day") : "";
@@ -401,6 +400,27 @@ public class WeatherFragment extends Fragment{
             this._dayWeathers[i].setImageResource(this.getResources().getIdentifier("wmo_" + data.dailyWeatherCode[i] + dayOrNight, "drawable", this.requireActivity().getPackageName()));
             this._dayWeathers[i].setContentDescription(this.getString(this.getResources().getIdentifier("wmo" + data.dailyWeatherCode[i], "string", this.requireActivity().getPackageName())));
         }
+    }
+
+    private @ColorInt int medianColor(@DrawableRes int image){
+        final Bitmap bitmap = BitmapFactory.decodeResource(this.requireActivity().getResources(), removeAnimation(image));
+        final int resolution = 20;    //Don't look at all pixels for performance reasons (this function is very slow otherwise, and no one will notice if the median isn't exact)
+        final int width = bitmap.getWidth(), height = bitmap.getHeight();
+        final int size = (int) Math.ceil((double) width / resolution) * (int) Math.ceil((double) height / resolution);
+
+        int[] red = new int[size], green = new int[size], blue = new int[size];
+        for(int x = 0, i = 0; x < width; x += resolution){
+            for(int y = 0; y < height; y += resolution, i++){
+                final @ColorInt int color = bitmap.getPixel(x, y);
+                red[i] = color & 0x00FF0000;    //This is actually red*255^2, but it doesn't matter since we're only interested in sorting it
+                green[i] = color & 0x0000FF00;    //This is actually green*255, but it doesn't matter since we're only interested in sorting it
+                blue[i] = color & 0x000000FF;
+            }
+        }
+        Arrays.sort(red);
+        Arrays.sort(green);
+        Arrays.sort(blue);
+        return 0xFF000000 | red[size / 2] | green[size / 2] | blue[size / 2];    //0xFF000000 for the alpha channel (which is always maximal for the images we use this function on)
     }
 
     public static boolean isDay(Calendar time, @Nullable Calendar sunrise, @Nullable Calendar sunset, double latitude){

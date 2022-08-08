@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import com.google.common.primitives.Ints;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,14 +81,14 @@ public class WeatherData{
 
         //Hourly variables
         for(int i = 0; i < 168; i++){
-            this.hourlyTemperature[i] = hourly.getJSONArray("temperature_2m").getDouble(i);
-            this.hourlyWeatherCode[i] = hourly.getJSONArray("weathercode").getInt(i);
-            this.hourlyWindSpeed[i] = hourly.getJSONArray("windspeed_10m").getDouble(i);
+            this.hourlyTemperature[i] = nullSafeDouble(hourly.getJSONArray("temperature_2m"), i);
+            this.hourlyWeatherCode[i] = nullSafeInt(hourly.getJSONArray("weathercode"), i);
+            this.hourlyWindSpeed[i] = nullSafeDouble(hourly.getJSONArray("windspeed_10m"), i);
             if(this.hourlyWindSpeed[i] != 0){    //If this is zero the wind direction will be null which would cause an error if the code below is executed
-                this.hourlyWindDirection[i] = hourly.getJSONArray("winddirection_10m").getDouble(i);
+                this.hourlyWindDirection[i] = nullSafeDouble(hourly.getJSONArray("winddirection_10m"), i);
             }
-            this.hourlyCloudCover[i] = hourly.getJSONArray("cloudcover").getInt(i);
-            this.hourlyRadiation[i] = hourly.getJSONArray("shortwave_radiation").getDouble(i);
+            this.hourlyCloudCover[i] = nullSafeInt(hourly.getJSONArray("cloudcover"), i);
+            this.hourlyRadiation[i] = nullSafeDouble(hourly.getJSONArray("shortwave_radiation"), i);
         }
 
         //Daily variables
@@ -111,6 +112,35 @@ public class WeatherData{
                 this.dailyWeatherCode[i] = combinedWeatherCode(hourlyWeatherCode[currentHour + 1], hourlyWeatherCode[currentHour + 2], hourlyWeatherCode[currentHour + 3]);
             }
         }
+    }
+
+    //This function and the next one are needed because a bug in the API (https://github.com/open-meteo/open-meteo/issues/71). If the value is null when it's not supposed to be, the function returns the non-null value that's closest in time.
+    private static double nullSafeDouble(JSONArray array, int index) throws JSONException{
+        if(array.isNull(index)){
+            for(int low = index - 1, high = index + 1; low >= 0 || high < array.length(); low--, high++){
+                if(low >= 0 && !array.isNull(low)){
+                    return array.getDouble(low);
+                }
+                if(high < array.length() && !array.isNull(high)){
+                    return array.getDouble(high);
+                }
+            }
+        }
+        return array.getDouble(index);
+    }
+
+    private static int nullSafeInt(JSONArray array, int index) throws JSONException{
+        if(array.isNull(index)){
+            for(int low = index - 1, high = index + 1; low >= 0 || high < array.length(); low--, high++){
+                if(low >= 0 && !array.isNull(low)){
+                    return array.getInt(low);
+                }
+                if(high < array.length() && !array.isNull(high)){
+                    return array.getInt(high);
+                }
+            }
+        }
+        return array.getInt(index);
     }
 
     public void putToBundle(Bundle bundle, String key){
