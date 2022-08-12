@@ -68,7 +68,8 @@ public class WeatherData{
 
         //Current variables
         this.currentTemperature = currentWeather.getDouble("temperature");
-        this.currentWeatherCode = currentWeather.getInt("weathercode");
+        this.currentCloudCover = totalCloudCover(hourly.getJSONArray("cloudcover_low").getInt(currentHour), hourly.getJSONArray("cloudcover_mid").getInt(currentHour));
+        this.currentWeatherCode = weatherCodeFromCloudCover(currentWeather.getInt("weathercode"), this.currentCloudCover);
         this.currentWindSpeed = currentWeather.getDouble("windspeed");
         this.currentWindDirection = currentWeather.getDouble("winddirection");
         this.currentHumidity = hourly.getJSONArray("relativehumidity_2m").getInt(currentHour);
@@ -76,18 +77,17 @@ public class WeatherData{
         this.currentPrecipitation = hourly.getJSONArray("precipitation").getDouble(currentHour + 1);
         this.currentPressure = hourly.getJSONArray("pressure_msl").getDouble(currentHour);
         this.currentRadiation = hourly.getJSONArray("shortwave_radiation").getDouble(currentHour + 1);
-        this.currentCloudCover = hourly.getJSONArray("cloudcover").getInt(currentHour);
         this.currentDewPoint = hourly.getJSONArray("dewpoint_2m").getDouble(currentHour);
 
         //Hourly variables
         for(int i = 0; i < 168; i++){
             this.hourlyTemperature[i] = nullSafeDouble(hourly.getJSONArray("temperature_2m"), i);
-            this.hourlyWeatherCode[i] = nullSafeInt(hourly.getJSONArray("weathercode"), i);
+            this.hourlyCloudCover[i] = totalCloudCover(nullSafeInt(hourly.getJSONArray("cloudcover_low"), i), nullSafeInt(hourly.getJSONArray("cloudcover_mid"), i));
+            this.hourlyWeatherCode[i] = weatherCodeFromCloudCover(nullSafeInt(hourly.getJSONArray("weathercode"), i), this.hourlyCloudCover[i]);
             this.hourlyWindSpeed[i] = nullSafeDouble(hourly.getJSONArray("windspeed_10m"), i);
             if(this.hourlyWindSpeed[i] != 0){    //If this is zero the wind direction will be null which would cause an error if the code below is executed
                 this.hourlyWindDirection[i] = nullSafeDouble(hourly.getJSONArray("winddirection_10m"), i);
             }
-            this.hourlyCloudCover[i] = nullSafeInt(hourly.getJSONArray("cloudcover"), i);
             this.hourlyRadiation[i] = nullSafeDouble(hourly.getJSONArray("shortwave_radiation"), i);
         }
 
@@ -141,6 +141,32 @@ public class WeatherData{
             }
         }
         return array.getInt(index);
+    }
+
+    private static int totalCloudCover(int cloudCoverLow, int cloudCoverMid){
+        final int sunCoverLow = 100 - cloudCoverLow;
+        final int sunCoverMid = 100 - cloudCoverMid;
+        final int totalSunCover = (sunCoverLow * sunCoverMid) / 100;
+        return 100 - totalSunCover;
+    }
+
+    //We need to get the weather code from the cloud cover manually because sometime the weather code from the API is 3 (cloudy) when there are only very high clouds that aren't visible. The cloudCover parameter takes this into account by only using cloudcover_low and cloudcover_mid.
+    private static int weatherCodeFromCloudCover(int weatherCode, int cloudCover){
+        if(weatherCode > 3){
+            return weatherCode;
+        }
+        else if(cloudCover > 75){
+            return 3;
+        }
+        else if(cloudCover > 50){
+            return 2;
+        }
+        else if(cloudCover > 25){
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
 
     public void putToBundle(Bundle bundle, String key){

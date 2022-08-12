@@ -237,7 +237,7 @@ public class City{
 
     public void updateWeatherFromServer(Runnable successCallback, Runnable errorCallback){
         try{
-            final String url = "https://api.open-meteo.com/v1/forecast?latitude=" + URLEncoder.encode(String.valueOf(this.latitude), StandardCharsets.UTF_8.name()) + "&longitude=" + URLEncoder.encode(String.valueOf(this.longitude), StandardCharsets.UTF_8.name()) + "&timezone=" + URLEncoder.encode(this.timezone, StandardCharsets.UTF_8.name()) + "&current_weather=true&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,precipitation,pressure_msl,shortwave_radiation,cloudcover,dewpoint_2m,winddirection_10m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset";
+            final String url = "https://api.open-meteo.com/v1/forecast?latitude=" + URLEncoder.encode(String.valueOf(this.latitude), StandardCharsets.UTF_8.name()) + "&longitude=" + URLEncoder.encode(String.valueOf(this.longitude), StandardCharsets.UTF_8.name()) + "&timezone=" + URLEncoder.encode(this.timezone, StandardCharsets.UTF_8.name()) + "&current_weather=true&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,precipitation,pressure_msl,shortwave_radiation,cloudcover_low,cloudcover_mid,dewpoint_2m,winddirection_10m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset";
             RequestQueue queue = Volley.newRequestQueue(this._context);
 
             StringRequest request = new StringRequest(Request.Method.GET, url, (String response) -> {
