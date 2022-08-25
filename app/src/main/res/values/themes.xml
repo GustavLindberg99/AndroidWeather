@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.MainActivity" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -15,7 +15,8 @@
         <item name="colorPrimary">@color/skyBlue</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="colorSurface">?attr/colorPrimary</item>
     </style>
 
     <style name="Theme.SecondaryActivities.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
