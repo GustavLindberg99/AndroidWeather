@@ -92,6 +92,6 @@
     <string name="add_widget">Lägg till widget</string>
     <string name="help">Hjälp</string>
     <string name="ok">OK</string>
-    <string name="about_string"><![CDATA[Väder %1$s<br /><br />Av Gustav Lindberg<br /><br />Denna app är licensierad under GNU GPL 2.0.<br /><br />Källkod: <a href="%2$s">%2$s</a><br /><br />Väderdata från <a href="%3$s">%3$s</a>]]></string>
+    <string name="about_string"><![CDATA[Väder %1$s<br /><br />Av Gustav Lindberg<br /><br />Denna app är licensierad under GNU GPL 3.0.<br /><br />Källkod: <a href="%2$s">%2$s</a><br /><br />Väderdata från <a href="%3$s">%3$s</a>]]></string>
     <string name="feedback">Feedback</string>
 </resources>
