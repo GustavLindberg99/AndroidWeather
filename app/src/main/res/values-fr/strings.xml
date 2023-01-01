@@ -92,6 +92,6 @@
     <string name="add_widget">Ajouter un widget</string>
     <string name="help">Aide</string>
     <string name="ok">OK</string>
-    <string name="about_string"><![CDATA[Météo %1$s<br /><br />Par Gustav Lindberg<br /><br />Cette application est licencié sous GNU GPL 2.0.<br /><br />Code source: <a href="%2$s">%2$s</a><br /><br />Données météo de <a href="%3$s">%3$s</a>]]></string>
+    <string name="about_string"><![CDATA[Météo %1$s<br /><br />Par Gustav Lindberg<br /><br />Cette application est licencié sous GNU GPL 3.0.<br /><br />Code source: <a href="%2$s">%2$s</a><br /><br />Données météo de <a href="%3$s">%3$s</a>]]></string>
     <string name="feedback">Feedback</string>
 </resources>
