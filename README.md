@@ -7,15 +7,15 @@ This app can be downloaded on Google Play [here](https://play.google.com/store/a
 ### Basic Usage
 This app starts out by showing a summary of the current weather and the daily forecast for the coming week:
 
-<img width="150" src="https://github.com/GustavLindberg99/AndroidWeather/assets/95423695/db48ce65-4db2-4b79-a25d-00808e592bb4">
+<img width="150" src="https://play-lh.googleusercontent.com/mIpNkfW8wD32yVOVrEEk5icuXo_FdNzKW9KB7iuHHeA8A23pYJiyJ6g6PT36Afskf3s=w5120-h2880-rw">
 
 You can also see more details about the current weather by scrolling down:
 
-<img width="150" src="https://github.com/GustavLindberg99/AndroidWeather/assets/95423695/c30e7c80-de11-4438-93a9-76546c84fd65">
+<img width="150" src="https://play-lh.googleusercontent.com/9RRuD6DVESR2kwwKRXsgzt1HVEpzRO2106s7kXa-xPBU4aUfUnGRpg6kAN3bqU_pPoU=w5120-h2880-rw">
 
 You can see an hourly weather forecast for a certain day by clicking on the name of that day. You can also see details for a specific hour by clicking on that hour:
 
-<img width="150" src="https://github.com/GustavLindberg99/AndroidWeather/assets/95423695/9edc8d69-1aaf-479f-ba50-00627c8eb9c5">
+<img width="150" src="https://play-lh.googleusercontent.com/7NtLXWWIiMNPXB3JPbcGgyqXqTmYs_DmV7O9XIW_oeMSJcUiWgjJg6UhhWC9ayiUaic=w5120-h2880-rw">
 
 ### Locations
 
@@ -23,8 +23,7 @@ When you install the app, it will ask for permission to access your current loca
 
 In addition to your current location, you can also add additional locations by clicking on the button on the top right and clicking "Add City":
 
-<img width="150" src="https://github.com/GustavLindberg99/AndroidWeather/assets/95423695/1968ca2d-cea6-43fa-8bf9-aec65a7db18d">
-<img width="150" src="https://github.com/GustavLindberg99/AndroidWeather/assets/95423695/14cc23d6-c18a-4ef4-a7c0-405dc2d8a42c">
+<img width="150" src="https://play-lh.googleusercontent.com/pzSR5IX9bbv0Zc8E_hk_uXAfb8HpstA9r0EGFYsTFLIckqKGNfLinQdbG3EUHsTGFw=w5120-h2880-rw">
 
 In the city list, you can click on a city to show the weather in that city. You can also scroll horizontally in the app to change cities.
 
@@ -32,14 +31,11 @@ In the city list, you can click on a city to show the weather in that city. You 
 
 You can change the units for temperature, wind speed and precipitation in the settings by clicking on the Settings button on the top left:
 
-<img width="150" src="https://github.com/GustavLindberg99/AndroidWeather/assets/95423695/4be9327f-be1c-45c8-bed5-da3a52fb5e6e">
-<img width="150" src="https://github.com/GustavLindberg99/AndroidWeather/assets/95423695/ec6770ae-96fa-49f0-84cb-734e5fd296aa">
+<img width="150" src="https://play-lh.googleusercontent.com/OFb6fR8-hnHFaQ7f3s8lrwuZhjxKCklftYeD2fH-ViRcpmLlS_HQ2tX9HwYrKFBJKw=w5120-h2880-rw">
 
 ### Widgets
 
 This app comes with four widgets that you can use in your launcher app: one transparent clock widget and four weather widgets: one transparent one, one partly transparent one and one with a weather illustration in the background.
-
-<img width="150" src="https://github.com/GustavLindberg99/AndroidWeather/assets/95423695/a62a9853-d807-48c6-a09b-d92f8be878bf">
 
 ## Credits
 
