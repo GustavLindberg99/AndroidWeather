@@ -142,33 +142,66 @@ class City(private val _context: Context, val name: String, val latitude: Double
         preferenceEditor.apply()
     }
 
-    fun updateWeatherFromServer(successCallback: Runnable, errorCallback: Runnable){
-        val url: String = "https://api.open-meteo.com/v1/forecast?latitude=" + URLEncoder.encode(latitude.toString(), StandardCharsets.UTF_8.name()) + "&longitude=" + URLEncoder.encode(longitude.toString(), StandardCharsets.UTF_8.name()) + "&timezone=" + URLEncoder.encode(timezone, StandardCharsets.UTF_8.name()) + "&current_weather=true&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,precipitation,pressure_msl,shortwave_radiation,cloudcover_low,cloudcover_mid,dewpoint_2m,winddirection_10m,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset"
-        val queue: RequestQueue = Volley.newRequestQueue(_context)
-        val request = StringRequest(Request.Method.GET, url, {response: String ->
-            try{
-                //Fix the current time so that it shows the actual current time rather than the last whole hour
-                val data = JSONObject(response)
-                val currentWeather = data.getJSONObject("current_weather")
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
-                dateFormat.timeZone = TimeZone.getTimeZone(timezone)
-                currentWeather.put("time", dateFormat.format(Date()).replace(" ", "T"))
+    fun updateWeatherFromServer(successCallback: () -> Unit, errorCallback: () -> Unit){
+        val urls = listOf(String.format(
+            "https://api.open-meteo.com/v1/forecast"+
+            "?latitude=%s&longitude=%s&timezone=%s&current_weather=true"+
+            "&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,precipitation,pressure_msl,uv_index,cloudcover_low,cloudcover_mid,dewpoint_2m,winddirection_10m,windspeed_10m,precipitation_probability,is_day"+
+            "&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset",
+            URLEncoder.encode(latitude.toString(), StandardCharsets.UTF_8.name()),
+            URLEncoder.encode(longitude.toString(), StandardCharsets.UTF_8.name()),
+            URLEncoder.encode(timezone, StandardCharsets.UTF_8.name())
+        ), String.format(
+            "https://air-quality-api.open-meteo.com/v1/air-quality"+
+            "?latitude=%s&longitude=%s&timezone=%s&current_weather=true"+
+            "&hourly=european_aqi,us_aqi",
+            URLEncoder.encode(latitude.toString(), StandardCharsets.UTF_8.name()),
+            URLEncoder.encode(longitude.toString(), StandardCharsets.UTF_8.name()),
+            URLEncoder.encode(timezone, StandardCharsets.UTF_8.name())
+        ))
 
-                //Save the JSON data
-                this.weatherData = WeatherData(data.toString(), timezone)
-                this.updateCachedWeather()
-                successCallback.run()
+        val queue: RequestQueue = Volley.newRequestQueue(this._context)
+        val responses = mutableListOf<String>()
+
+        val handleError: (Exception) -> Unit = {
+            //The error handler is also run on 4xx errors (this was unclear from the documentation so I tested it)
+            queue.cancelAll{true}
+            errorCallback()
+        }
+
+        val handleResponse = {lastResponse: String ->
+            responses.add(lastResponse)
+            if(responses.size == urls.size){
+                try{
+                    //Merge different responses into one JSON object
+                    val data = JSONObject()
+                    for(response in responses){
+                        data.mergeWith(JSONObject(response))
+                    }
+
+                    //Fix the current time so that it shows the actual current time rather than the last whole hour
+                    val currentWeather = data.getJSONObject("current_weather")
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+                    dateFormat.timeZone = TimeZone.getTimeZone(timezone)
+                    currentWeather.put("time", dateFormat.format(Date()).replace(" ", "T"))
+
+                    //Save the JSON data
+                    this.weatherData = WeatherData(data.toString(), timezone)
+                    this.updateCachedWeather()
+                    successCallback()
+                }
+                catch(e: JSONException){
+                    handleError(e)
+                }
+                catch(e: ParseException){
+                    handleError(e)
+                }
             }
-            catch(ignore: JSONException){
-                errorCallback.run()
-            }
-            catch(ignore: ParseException){
-                errorCallback.run()
-            }
-        }, {    //The error handler is also run on 4xx errors (this was unclear from the documentation so I tested it)
-            errorCallback.run()
-        })
-        queue.add(request)
+        }
+
+        for(url in urls){
+            queue.add(StringRequest(Request.Method.GET, url, handleResponse, handleError))
+        }
     }
 
     fun toBundle(): Bundle {

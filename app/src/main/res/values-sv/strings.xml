@@ -94,4 +94,17 @@
     <string name="ok">OK</string>
     <string name="about_string"><![CDATA[Väder %1$s<br /><br />Av Gustav Lindberg<br /><br />Denna app är licensierad under <a href="%4$s">GNU AGPL 3.0</a>.<br /><br />Källkod: <a href="%2$s">%2$s</a><br /><br />Väderdata från <a href="%3$s">%3$s</a>]]></string>
     <string name="feedback">Feedback</string>
+    <string name="precipitationProbability">Risk för nederbörd</string>
+    <string name="airQualityIndex">Luftkvalitetsindex</string>
+    <string name="american">Amerikansk</string>
+    <string name="european">Europeisk</string>
+    <string name="good">Bra</string>
+    <string name="fair">Rimlig</string>
+    <string name="poor">Dålig</string>
+    <string name="veryPoor">Väldigt dålig</string>
+    <string name="extremelyPoor">Extremt dålig</string>
+    <string name="unhealthyForSensitiveGroups">Ohälsosam för känsliga grupper</string>
+    <string name="unhealthy">Ohälsosam</string>
+    <string name="veryUnhealthy">Mycket ohälsosam</string>
+    <string name="hazardous">Farlig</string>
 </resources>

@@ -60,6 +60,8 @@ class WeatherFragment: Fragment(){
     private val _currentUVIndex: TextView get() = this._fragmentView.findViewById(R.id.current_uv_index)
     private val _currentCloudCover: TextView get() = this._fragmentView.findViewById(R.id.current_cloud_cover)
     private val _currentDewPoint: TextView get() = this._fragmentView.findViewById(R.id.current_dew_point)
+    private val _currentPrecipitationProbability: TextView get() = this._fragmentView.findViewById(R.id.current_precipitation_probability)
+    private val _currentAirQualityIndex: TextView get() = this._fragmentView.findViewById(R.id.current_air_quality_index)
     private lateinit var _city: City
     private var _showErrorMessage: Boolean = true
 
@@ -176,8 +178,8 @@ class WeatherFragment: Fragment(){
         val currentWindString = if(data.currentWindSpeed == 0.0) Settings.UnitFormatter.windSpeed(this.requireActivity(), data.currentWindSpeed) else String.format(Locale.US, "%s %s", this.getString(currentWindDirectionStringId), Settings.UnitFormatter.windSpeed(this.requireActivity(), data.currentWindSpeed))
         val firstSunrise: Calendar? = data.sunrises[0]
         val firstSunset: Calendar? = data.sunsets[0]
-        this._currentSunrise.text = if(firstSunrise == null) "--" else String.format(Locale.US, "%02d.%02d", firstSunrise[Calendar.HOUR_OF_DAY], firstSunrise[Calendar.MINUTE])
-        this._currentSunset.text = if(firstSunset == null) "--" else String.format(Locale.US, "%02d.%02d", firstSunset[Calendar.HOUR_OF_DAY], firstSunset[Calendar.MINUTE])
+        this._currentSunrise.text = if(firstSunrise == null) "--" else Settings.UnitFormatter.time(this.requireActivity(), firstSunrise[Calendar.HOUR_OF_DAY], firstSunrise[Calendar.MINUTE])
+        this._currentSunset.text = if(firstSunset == null) "--" else Settings.UnitFormatter.time(this.requireActivity(), firstSunset[Calendar.HOUR_OF_DAY], firstSunset[Calendar.MINUTE])
         this._currentTemperature.text = Settings.UnitFormatter.temperature(this.requireActivity(), data.currentTemperature)
         this._currentWeather.text = currentWeatherString
         this._currentWind.text = currentWindString
@@ -185,13 +187,15 @@ class WeatherFragment: Fragment(){
         this._currentApparentTemperature.text = Settings.UnitFormatter.temperature(this.requireActivity(), data.currentApparentTemperature)
         this._currentPrecipitation.text = Settings.UnitFormatter.precipitation(this.requireActivity(), data.currentPrecipitation)
         this._currentPressure.text = Settings.UnitFormatter.pressure(data.currentPressure)
-        this._currentUVIndex.text = Settings.UnitFormatter.uvIndex(this.requireActivity(), data.currentRadiation)
+        this._currentUVIndex.text = Settings.UnitFormatter.uvIndex(this.requireActivity(), data.currentUvIndex)
         this._currentCloudCover.text = Settings.UnitFormatter.percentage(data.currentCloudCover)
         this._currentDewPoint.text = Settings.UnitFormatter.temperature(this.requireActivity(), data.currentDewPoint)
+        this._currentPrecipitationProbability.text = Settings.UnitFormatter.percentage(data.currentPrecipitationProbability)
+        this._currentAirQualityIndex.text = Settings.UnitFormatter.airQualityIndex(this.requireActivity(), data.currentAmericanAqi, data.currentEuropeanAqi)
 
         //Update the background (only if this fragment is the one that's currently visible)
         if(this._city == (this.requireActivity() as MainActivity).selectedCity()){
-            @DrawableRes val backgroundImage = getBackgroundResource(this.requireActivity(), data.currentWeatherCode, now, data.sunrises[0], data.sunsets[0], data.latitude)
+            @DrawableRes val backgroundImage = getBackgroundResource(this.requireActivity(), data)
             if(backgroundImage == 0){
                 this._backgroundImage.setImageResource(R.color.skyBlue)
                 @ColorInt val color = this.requireActivity().getColor(R.color.skyBlue)
@@ -217,25 +221,23 @@ class WeatherFragment: Fragment(){
             for(hour in 0..23){
                 val hourOfDay: Int = (if(day == 0) currentHour + 1 else 0) + hour    //Hour of day, can be greater than 24 if the view is for an hour tomorrow showing in the bar for today
                 val i: Int = day * 24 + hourOfDay     //Index of the current hour in the weekly length-168 arrays
-                val time: Calendar = data.hourlyTime[i]
 
                 //Hours in weather bar
-                val dayOrNight: String = if(data.hourlyWeatherCode[i] > 2 && data.hourlyWeatherCode[i] / 10 != 8) "" else if(time.isDay(data.sunrises[i / 24], data.sunsets[i / 24], data.latitude)) "_day" else "_night"
-                this._hours[day][hour].text = String.format(Locale.US, "%02d\n%s", hourOfDay % 24, Settings.UnitFormatter.temperature(requireActivity(), data.hourlyTemperature[i]))
-                this._hours[day][hour].setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, this.resources.getIdentifier("wmo_" + data.hourlyWeatherCode[i] + dayOrNight, "drawable", requireActivity().packageName))
+                this._hours[day][hour].text = String.format(Locale.US, "%s\n%s", Settings.UnitFormatter.time(this.requireActivity(), hourOfDay), Settings.UnitFormatter.temperature(this.requireActivity(), data.hourlyTemperature[i]))
+                this._hours[day][hour].setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, this.resources.getIdentifier("wmo_" + data.hourlyWeatherCode[i] + data.hourlyDayOrNight(i), "drawable", requireActivity().packageName))
 
                 //Hourly details bar
                 val windDirectionStringId = this.resources.getIdentifier("wind" + (data.hourlyWindDirection[i] / 22.5 + 1).roundToInt() % 16, "string", requireActivity().packageName)
                 val windSpeed = data.hourlyWindSpeed[i]
                 val windString = if(windSpeed == 0.0) Settings.UnitFormatter.windSpeed(requireActivity(), windSpeed) else String.format(Locale.US, "%s %s", this.getString(windDirectionStringId), Settings.UnitFormatter.windSpeed(requireActivity(), windSpeed))
-                val cloudCover = Settings.UnitFormatter.percentage(data.hourlyCloudCover[i])
-                val uvIndex = Settings.UnitFormatter.uvIndex(requireActivity(), data.hourlyRadiation[i])
+                val precipitationProbability = Settings.UnitFormatter.percentage(data.hourlyPrecipitationProbability[i])
+                val uvIndex = Settings.UnitFormatter.uvIndex(requireActivity(), data.hourlyUvIndex[i])
                 val windView: TextView = hourlyDetailsBar.findViewById(R.id.wind)
-                val cloudCoverView: TextView = hourlyDetailsBar.findViewById(R.id.cloud_cover)
+                val precipitationProbabilityView: TextView = hourlyDetailsBar.findViewById(R.id.precipitation_probability)
                 val uvIndexView: TextView = hourlyDetailsBar.findViewById(R.id.uv_index)
                 if(this._selectedHours[day] == hour){
                     windView.text = windString
-                    cloudCoverView.text = cloudCover
+                    precipitationProbabilityView.text = precipitationProbability
                     uvIndexView.text = uvIndex
                 }
                 this._hours[day][hour].setOnClickListener{
@@ -251,7 +253,7 @@ class WeatherFragment: Fragment(){
                         hourlyDetailsBar.visibility = View.VISIBLE
                         this._hourBorders[day][hour].visibility = View.INVISIBLE
                         windView.text = windString
-                        cloudCoverView.text = cloudCover
+                        precipitationProbabilityView.text = precipitationProbability
                         uvIndexView.text = uvIndex
                     }
                 }
@@ -289,8 +291,8 @@ class WeatherFragment: Fragment(){
                     val sunriseView = Button(requireActivity(), null, R.attr.buttonBarButtonStyle)
                     this._sunriseViews[day] = sunriseView
                     sunriseView.isEnabled = false
-                    sunriseView.setTextColor(requireActivity().getColor(R.color.white))
-                    sunriseView.text = String.format(Locale.US, "%02d.%02d\n", sunrise[Calendar.HOUR_OF_DAY], sunrise[Calendar.MINUTE]) + this.getString(R.string.sunrise)
+                    sunriseView.setTextColor(this.requireActivity().getColor(R.color.white))
+                    sunriseView.text = Settings.UnitFormatter.time(this.requireActivity(), sunrise[Calendar.HOUR_OF_DAY], sunrise[Calendar.MINUTE]) + "\n" + this.getString(R.string.sunrise)
                     sunriseView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.sunrise)
                     val index: Int = sunrise[Calendar.HOUR_OF_DAY] + offset + 1
                     hourlyWeatherBarLayout.addView(sunriseView, index)
@@ -317,8 +319,8 @@ class WeatherFragment: Fragment(){
                     val sunsetView = Button(requireActivity(), null, R.attr.buttonBarButtonStyle)
                     this._sunsetViews[day] = sunsetView
                     sunsetView.isEnabled = false
-                    sunsetView.setTextColor(requireActivity().getColor(R.color.white))
-                    sunsetView.text = String.format(Locale.US, "%02d.%02d\n", sunset[Calendar.HOUR_OF_DAY], sunset[Calendar.MINUTE]) + this.getString(R.string.sunset)
+                    sunsetView.setTextColor(this.requireActivity().getColor(R.color.white))
+                    sunsetView.text = Settings.UnitFormatter.time(this.requireActivity(), sunset[Calendar.HOUR_OF_DAY], sunset[Calendar.MINUTE]) + "\n" + this.getString(R.string.sunset)
                     sunsetView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.sunset)
                     val index: Int = sunset[Calendar.HOUR_OF_DAY] + offset + 1 + if(sunrise != null && sunrise.timeInMillis < sunset.timeInMillis) 1 else 0
                     hourlyWeatherBarLayout.addView(sunsetView, index)
@@ -334,18 +336,7 @@ class WeatherFragment: Fragment(){
 
         //Daily
         for(i in 0..6){
-            val isEvening: Boolean = if((i == 0 || data.sunrises[i] == null) && data.sunsets[i] == null){
-                if(now[Calendar.MONTH] >= Calendar.APRIL && now[Calendar.MONTH] <= Calendar.SEPTEMBER){
-                    data.latitude < 0
-                }
-                else{
-                    data.latitude > 0
-                }
-            }
-            else{
-                i == 0 && now.timeInMillis > data.sunsets[0]!!.timeInMillis    //data.sunsets[0] can't be null here because if it is, either i != 0 and then the part after the && won't get evaluated, or i == 0 and then the if block above will be true so this else block will never be entered (since if i == 0, then ((i == 0 || ...) && data.sunsets[i] == null) = ((true || ...) && data.sunsets[i] == null) = (data.sunsets[0] == null), since i is 0)
-            }
-            val dayOrNight: String = if(data.dailyWeatherCode[i] > 2 && data.dailyWeatherCode[i] / 10 != 8) "" else if(isEvening) "_night" else "_day"
+            val dayOrNight: String = data.dailyDayOrNight(i, if(i == 0) currentHour else 0)
             this._dayTemperatures[i].text = String.format(Locale.US, "%s/%s", Settings.UnitFormatter.temperature(requireActivity(), data.minTemperature[i]), Settings.UnitFormatter.temperature(this.requireActivity(), data.maxTemperature[i]))
             this._dayWeathers[i].setImageResource(this.resources.getIdentifier("wmo_" + data.dailyWeatherCode[i] + dayOrNight, "drawable", this.requireActivity().packageName))
             this._dayWeathers[i].contentDescription = this.getString(this.resources.getIdentifier("wmo" + data.dailyWeatherCode[i], "string", this.requireActivity().packageName))

@@ -16,7 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -69,7 +68,7 @@ class CityList: AppCompatActivity(){
         val data = city.weatherData
         if(data != null){
             locationBar.findViewById<TextView>(R.id.city_list_temperature).text = Settings.UnitFormatter.temperature(this, data.currentTemperature)
-            backgroundResource = getBackgroundResource(this, data.currentWeatherCode, Calendar.getInstance(), data.sunrises[0], data.sunsets[0], city.latitude)
+            backgroundResource = getBackgroundResource(this, data)
         }
         if(backgroundResource == 0){
             backgroundResource = R.color.skyBlue

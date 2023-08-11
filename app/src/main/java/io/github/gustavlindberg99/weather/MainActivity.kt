@@ -199,7 +199,7 @@ class MainActivity: AppCompatActivity(), LocationListener {
 
     fun selectedCity(): City? {
         var selectedIndex: Int = this._dotIndicator.selectedItemIndex
-        val currentLocation: City? = City.currentLocation(this@MainActivity)
+        val currentLocation: City? = City.currentLocation(this)
         if(currentLocation != null){
             selectedIndex--
         }

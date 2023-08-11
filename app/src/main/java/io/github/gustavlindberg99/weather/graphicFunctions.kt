@@ -12,13 +12,13 @@ import kotlin.math.ceil
 
 @SuppressLint("DiscouragedApi")
 @DrawableRes
-fun getBackgroundResource(context: Context, weatherCode: Int, now: Calendar, sunrise: Calendar?, sunset: Calendar?, latitude: Double): Int {
-    val day = now.isDay(sunrise, sunset, latitude)
-    val resourceName: String = when(weatherCode / 10) {
-        0 -> "bg_$weatherCode"
+fun getBackgroundResource(context: Context, data: WeatherData): Int {
+    val day = data.currentIsDay
+    val resourceName: String = when(data.currentWeatherCode / 10) {
+        0 -> "bg_" + data.currentWeatherCode
         4 -> "bg_fog"
         5, 6, 8 -> {
-            if(weatherCode == 85 || weatherCode == 86) "bg_snow"
+            if(data.currentWeatherCode == 85 || data.currentWeatherCode == 86) "bg_snow"
             else "bg_rain"
         }
         7 -> "bg_snow"
