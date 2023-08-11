@@ -94,4 +94,17 @@
     <string name="ok">OK</string>
     <string name="about_string"><![CDATA[Météo %1$s<br /><br />Par Gustav Lindberg<br /><br />Cette application est licencié sous <a href="%4$s">GNU AGPL 3.0</a>.<br /><br />Code source: <a href="%2$s">%2$s</a><br /><br />Données météo de <a href="%3$s">%3$s</a>]]></string>
     <string name="feedback">Feedback</string>
+    <string name="precipitationProbability">Risque de précipitation</string>
+    <string name="airQualityIndex">Indice de qualité de l\'air</string>
+    <string name="american">Américain</string>
+    <string name="european">Européen</string>
+    <string name="good">Bon</string>
+    <string name="fair">Passable</string>
+    <string name="poor">Mauvais</string>
+    <string name="veryPoor">Très mauvais</string>
+    <string name="extremelyPoor">Extrêmement mauvais</string>
+    <string name="unhealthyForSensitiveGroups">Malsain pour les personnes sensibles</string>
+    <string name="unhealthy">Malsain</string>
+    <string name="veryUnhealthy">Très malsain</string>
+    <string name="hazardous">Hasardeux</string>
 </resources>

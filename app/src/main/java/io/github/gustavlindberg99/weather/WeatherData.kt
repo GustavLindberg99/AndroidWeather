@@ -11,7 +11,6 @@ import kotlin.math.roundToInt
 
 class WeatherData(private val _json: String, timezone: String){
     val now: Calendar
-    val latitude: Double
 
     //Current variables
     val currentTemperature: Double
@@ -22,18 +21,22 @@ class WeatherData(private val _json: String, timezone: String){
     val currentHumidity: Int
     val currentPrecipitation: Double
     val currentPressure: Double
-    val currentRadiation: Double
+    val currentUvIndex: Int
     val currentCloudCover: Int
     val currentDewPoint: Double
+    val currentPrecipitationProbability: Int
+    val currentAmericanAqi: Int
+    val currentEuropeanAqi: Int
+    val currentIsDay: Boolean
 
     //Hourly variables (length: 168)
     val hourlyWeatherCode: List<Int>
     val hourlyTemperature: List<Double>
     val hourlyWindSpeed: List<Double>
     val hourlyWindDirection: List<Double>
-    val hourlyCloudCover: List<Int>
-    val hourlyRadiation: List<Double>
-    val hourlyTime: List<Calendar>
+    val hourlyUvIndex: List<Int>
+    val hourlyPrecipitationProbability: List<Int>
+    val hourlyIsDay: List<Boolean>
 
     //Daily variables (length: 7)
     val sunrises: List<Calendar?>
@@ -47,7 +50,6 @@ class WeatherData(private val _json: String, timezone: String){
         val currentWeather = data.getJSONObject("current_weather")
         val hourly = data.getJSONObject("hourly")
         val daily = data.getJSONObject("daily")
-        this.latitude = data.getDouble("latitude")
         this.now = parseDate(currentWeather.getString("time"), timezone) ?: Calendar.getInstance()
         this.now.timeZone = TimeZone.getTimeZone(timezone)
         val currentHour: Int = now[Calendar.HOUR_OF_DAY]
@@ -55,29 +57,33 @@ class WeatherData(private val _json: String, timezone: String){
         //Current variables
         this.currentTemperature = currentWeather.getDouble("temperature")
         this.currentCloudCover = totalCloudCover(hourly.getJSONArray("cloudcover_low").getInt(currentHour).coerceIn(0..100), hourly.getJSONArray("cloudcover_mid").getInt(currentHour).coerceIn(0..100))
-        this.currentPrecipitation = hourly.getJSONArray("precipitation").getDouble(currentHour + 1).coerceAtLeast(0.0)
+        this.currentPrecipitation = hourly.getJSONArray("precipitation").getDouble(currentHour).coerceAtLeast(0.0)
         this.currentWeatherCode = weatherCodeFromData(currentWeather.getInt("weathercode"), this.currentCloudCover, this.currentPrecipitation)
         this.currentWindSpeed = currentWeather.getDouble("windspeed").coerceAtLeast(0.0)
         this.currentWindDirection = currentWeather.getDouble("winddirection")
         this.currentHumidity = hourly.getJSONArray("relativehumidity_2m").getInt(currentHour).coerceIn(0..100)
         this.currentApparentTemperature = hourly.getJSONArray("apparent_temperature").getInt(currentHour).toDouble()
         this.currentPressure = hourly.getJSONArray("pressure_msl").getDouble(currentHour).coerceAtLeast(0.0)
-        this.currentRadiation = hourly.getJSONArray("shortwave_radiation").getDouble(currentHour + 1).coerceAtLeast(0.0)
+        this.currentUvIndex = hourly.getJSONArray("uv_index").getDouble(currentHour).roundToInt().coerceAtLeast(0)
         this.currentDewPoint = hourly.getJSONArray("dewpoint_2m").getDouble(currentHour)
+        this.currentPrecipitationProbability = hourly.getJSONArray("precipitation_probability").getInt(currentHour).coerceIn(0..100)
+        this.currentAmericanAqi = hourly.getJSONArray("us_aqi").getInt(currentHour).coerceAtLeast(0)
+        this.currentEuropeanAqi = hourly.getJSONArray("european_aqi").getInt(currentHour).coerceAtLeast(0)
+        this.currentIsDay = hourly.getJSONArray("is_day").getInt(currentHour) != 0
 
         //Hourly variables
         val hourlyWeatherCode = mutableListOf<Int>()
         val hourlyTemperature = mutableListOf<Double>()
         val hourlyWindSpeed = mutableListOf<Double>()
         val hourlyWindDirection = mutableListOf<Double>()
-        val hourlyCloudCover = mutableListOf<Int>()
-        val hourlyRadiation = mutableListOf<Double>()
-        val hourlyTime = mutableListOf<Calendar>()
+        val hourlyUvIndex = mutableListOf<Int>()
+        val hourlyPrecipitationProbability = mutableListOf<Int>()
+        val hourlyIsDay = mutableListOf<Boolean>()
         for(i in 0..167){
             hourlyTemperature.add(nullSafe(hourly.getJSONArray("temperature_2m"), i))
-            hourlyCloudCover.add(totalCloudCover(nullSafe<Int>(hourly.getJSONArray("cloudcover_low"), i).coerceIn(0..100), nullSafe<Int>(hourly.getJSONArray("cloudcover_mid"), i).coerceIn(0..100)))
+            val hourlyCloudCover = totalCloudCover(nullSafe<Int>(hourly.getJSONArray("cloudcover_low"), i).coerceIn(0..100), nullSafe<Int>(hourly.getJSONArray("cloudcover_mid"), i).coerceIn(0..100))
             val hourlyPrecipitation: Double = nullSafe<Double>(hourly.getJSONArray("precipitation"), i).coerceAtLeast(0.0)
-            hourlyWeatherCode.add(weatherCodeFromData(nullSafe(hourly.getJSONArray("weathercode"), i), hourlyCloudCover[i], hourlyPrecipitation))
+            hourlyWeatherCode.add(weatherCodeFromData(nullSafe(hourly.getJSONArray("weathercode"), i), hourlyCloudCover, hourlyPrecipitation))
             hourlyWindSpeed.add(nullSafe<Double>(hourly.getJSONArray("windspeed_10m"), i).coerceAtLeast(0.0))
             if(hourlyWindSpeed[i] != 0.0){    //If this is zero the wind direction will be null which would cause an error if the code below is executed
                 hourlyWindDirection.add(nullSafe(hourly.getJSONArray("winddirection_10m"), i))
@@ -85,16 +91,17 @@ class WeatherData(private val _json: String, timezone: String){
             else{
                 hourlyWindDirection.add(0.0)    //If there is no wind, add zero to preserve the structure of the array (it doesn't matter if it's zero or anything else because it won't be displayed anyway)
             }
-            hourlyRadiation.add(nullSafe<Double>(hourly.getJSONArray("shortwave_radiation"), i).coerceAtLeast(0.0))
-            hourlyTime.add(parseDate(hourly.getJSONArray("time").getString(i), timezone) ?: throw ParseException("API sent invalid date for the time of an hour", 0))
+            hourlyUvIndex.add(nullSafe<Double>(hourly.getJSONArray("uv_index"), i).roundToInt().coerceAtLeast(0))
+            hourlyPrecipitationProbability.add(nullSafe<Int>(hourly.getJSONArray("precipitation_probability"), i).coerceIn(0..100))
+            hourlyIsDay.add(nullSafe<Int>(hourly.getJSONArray("is_day"), i) != 0)
         }
         this.hourlyWeatherCode = hourlyWeatherCode
         this.hourlyTemperature = hourlyTemperature
         this.hourlyWindSpeed = hourlyWindSpeed
-        this.hourlyWindDirection  = hourlyWindDirection
-        this.hourlyCloudCover = hourlyCloudCover
-        this.hourlyRadiation = hourlyRadiation
-        this.hourlyTime = hourlyTime
+        this.hourlyWindDirection = hourlyWindDirection
+        this.hourlyUvIndex = hourlyUvIndex
+        this.hourlyPrecipitationProbability = hourlyPrecipitationProbability
+        this.hourlyIsDay = hourlyIsDay
 
         //Daily variables
         val sunrises = mutableListOf<Calendar?>()
@@ -127,6 +134,39 @@ class WeatherData(private val _json: String, timezone: String){
         this.minTemperature = minTemperature
         this.dailyWeatherCode = dailyWeatherCode
     }
+
+    fun currentDayOrNight(): String =
+        if(this.currentWeatherCode > 2 && this.currentWeatherCode / 10 != 8){
+            ""
+        }
+        else if(this.currentIsDay){
+            "_day"
+        }
+        else{
+            "_night"
+        }
+
+    fun hourlyDayOrNight(hour: Int): String =
+        if(this.hourlyWeatherCode[hour] > 2 && this.hourlyWeatherCode[hour] / 10 != 8){
+            ""
+        }
+        else if(this.hourlyIsDay[hour]){
+            "_day"
+        }
+        else{
+            "_night"
+        }
+
+    fun dailyDayOrNight(day: Int, startHour: Int = 0): String =
+        if(this.dailyWeatherCode[day] > 2 && this.dailyWeatherCode[day] / 10 != 8){
+            ""
+        }
+        else if(this.hourlyIsDay.subList(day + startHour, day + 24).any{it}){
+            "_day"
+        }
+        else{
+            "_night"
+        }
 
     fun putToBundle(bundle: Bundle, key: String?){
         bundle.putString(key, _json)
@@ -319,14 +359,14 @@ fun SharedPreferences.Editor.putWeatherData(key: String, weatherData: WeatherDat
 
 fun Bundle.getWeatherData(key: String, timezone: String): WeatherData? {
     val json: String = this.getString(key) ?: return null
-    try{
-        return WeatherData(json, timezone)
+    return try{
+        WeatherData(json, timezone)
     }
     catch(ignore: JSONException){
-        return null
+        null
     }
     catch(ignore: ParseException){
-        return null
+        null
     }
 }
 

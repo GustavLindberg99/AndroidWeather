@@ -40,7 +40,7 @@
                 android:layout_gravity="center"
                 android:textSize="64sp"
                 android:textColor="@color/white"
-                android:text="--°C"
+                android:text="--"
                 tools:ignore="HardcodedText"/>
 
             <TableLayout
@@ -98,13 +98,15 @@
                     android:layout_marginTop="8dp">
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/sunrise"
                         android:textSize="16sp"/>
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/sunset"
                         android:textSize="16sp"/>
@@ -115,7 +117,8 @@
                     <TextView
                         android:textColor="@color/white"
                         android:id="@+id/current_sunrise"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="--"
                         android:textSize="28sp"
@@ -123,7 +126,8 @@
                     <TextView
                         android:textColor="@color/white"
                         android:id="@+id/current_sunset"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="--"
                         android:textSize="28sp"
@@ -136,13 +140,15 @@
                     android:layout_marginTop="8dp">
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/wind"
                         android:textSize="16sp"/>
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/cloudCover"
                         android:textSize="16sp"/>
@@ -153,53 +159,17 @@
                     <TextView
                         android:textColor="@color/white"
                         android:id="@+id/current_wind"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="-- km/h"
+                        android:text="--"
                         android:textSize="28sp"
                         tools:ignore="HardcodedText"/>
                     <TextView
                         android:textColor="@color/white"
                         android:id="@+id/current_cloud_cover"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="--%"
-                        android:textSize="28sp"
-                        tools:ignore="HardcodedText"/>
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/feelsLike"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/uvIndex"
-                        android:textSize="16sp"/>
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:textColor="@color/white"
-                        android:id="@+id/current_apparent_temperature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="--°C"
-                        android:textSize="28sp"
-                        tools:ignore="HardcodedText"/>
-                    <TextView
-                        android:textColor="@color/white"
-                        android:id="@+id/current_uv_index"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="--"
                         android:textSize="28sp"
@@ -212,15 +182,17 @@
                     android:layout_marginTop="8dp">
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="@string/precipitation"
+                        android:text="@string/feelsLike"
                         android:textSize="16sp"/>
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="@string/humidity"
+                        android:text="@string/uvIndex"
                         android:textSize="16sp"/>
                 </TableRow>
                 <TableRow
@@ -228,18 +200,20 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:textColor="@color/white"
-                        android:id="@+id/current_precipitation"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/current_apparent_temperature"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="-- mm"
+                        android:text="--"
                         android:textSize="28sp"
                         tools:ignore="HardcodedText"/>
                     <TextView
                         android:textColor="@color/white"
-                        android:id="@+id/current_humidity"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/current_uv_index"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="--%"
+                        android:text="--"
                         android:textSize="28sp"
                         tools:ignore="HardcodedText"/>
                 </TableRow>
@@ -250,13 +224,57 @@
                     android:layout_marginTop="8dp">
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/precipitation"
+                        android:textSize="16sp"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/humidity"
+                        android:textSize="16sp"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/current_precipitation"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="28sp"
+                        tools:ignore="HardcodedText"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/current_humidity"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="28sp"
+                        tools:ignore="HardcodedText"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/pressure"
                         android:textSize="16sp"/>
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/dewPoint"
                         android:textSize="16sp"/>
@@ -267,17 +285,61 @@
                     <TextView
                         android:textColor="@color/white"
                         android:id="@+id/current_pressure"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="-- hPa"
+                        android:text="--"
                         android:textSize="28sp"
                         tools:ignore="HardcodedText"/>
                     <TextView
                         android:textColor="@color/white"
                         android:id="@+id/current_dew_point"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="--°C"
+                        android:text="--"
+                        android:textSize="28sp"
+                        tools:ignore="HardcodedText"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/precipitationProbability"
+                        android:textSize="16sp"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/airQualityIndex"
+                        android:textSize="16sp"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/current_precipitation_probability"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="28sp"
+                        tools:ignore="HardcodedText"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/current_air_quality_index"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="--"
                         android:textSize="28sp"
                         tools:ignore="HardcodedText"/>
                 </TableRow>

@@ -93,6 +93,30 @@
             tools:ignore="HardcodedText"/>
     </RadioGroup>
 
+    <TextView
+        android:text="@string/airQualityIndex"
+        android:textSize="24sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+        <RadioButton
+            android:id="@+id/americanAqi"
+            android:text="@string/american"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"/>
+        <RadioButton
+            android:id="@+id/europeanAqi"
+            android:text="@string/european"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"/>
+    </RadioGroup>
+
     <Button
         android:id="@+id/help_button"
         android:text="@string/help"

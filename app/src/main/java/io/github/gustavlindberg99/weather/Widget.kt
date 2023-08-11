@@ -86,7 +86,7 @@ abstract class Widget(
         val data: WeatherData = location.weatherData ?: return
         val now: Calendar = Calendar.getInstance()
         now.timeZone = TimeZone.getTimeZone(location.timezone)
-        val dayOrNight: String = if(data.currentWeatherCode > 2 && data.currentWeatherCode / 10 != 8) "" else if(now.isDay(data.sunrises[0], data.sunsets[0], location.latitude)) "_day" else "_night"
+        val dayOrNight: String = data.currentDayOrNight()
 
         //There may be multiple widgets active, so update all of them
         for(appWidgetId in appWidgetIds){
@@ -108,7 +108,7 @@ abstract class Widget(
             val weatherDescription: String = context.getString(context.resources.getIdentifier("wmo" + data.currentWeatherCode, "string", context.packageName))
             this.setCurrentWeather(views, weatherImage, weatherDescription)
             views.setTextViewText(this._currentTemperature, Settings.UnitFormatter.temperature(context, data.currentTemperature))
-            @DrawableRes val weatherBackground = getBackgroundResource(context, data.currentWeatherCode, now, data.sunrises[0], data.sunsets[0], location.latitude)
+            @DrawableRes val weatherBackground = getBackgroundResource(context, data)
             views.setImageViewResource(this._background, this.getBackground(weatherBackground))
             views.setTextViewText(this._maxminTemperatures, Settings.UnitFormatter.temperature(context, data.minTemperature[0]) + "/" + Settings.UnitFormatter.temperature(context, data.maxTemperature[0]))
             this.setDailyWeather(context, views, data.now, data.maxTemperature, data.minTemperature, data.dailyWeatherCode)

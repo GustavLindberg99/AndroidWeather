@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.widget.Button
@@ -29,6 +30,7 @@ class Settings: AppCompatActivity(){
         const val TEMPERATURE_UNIT = "temperatureUnit"
         const val WIND_SPEED_UNIT = "windSpeedUnit"
         const val PRECIPITATION_UNIT = "precipitationUnit"
+        const val AIR_QUALITY_INDEX = "airQualityIndex"
 
         const val CELSIUS = 0
         const val FAHRENHEIT = 1
@@ -37,6 +39,8 @@ class Settings: AppCompatActivity(){
         const val MPH = 2
         const val MM = 0
         const val INCHES = 1
+        const val AMERICAN_AQI = 0
+        const val EUROPEAN_AQI = 1
 
         fun temperatureUnit(context: Context): Int {
             return preferences(context).getInt(TEMPERATURE_UNIT, CELSIUS)
@@ -49,11 +53,15 @@ class Settings: AppCompatActivity(){
         fun precipitationUnit(context: Context): Int {
             return preferences(context).getInt(PRECIPITATION_UNIT, MM)
         }
+
+        fun airQualityIndex(context: Context): Int {
+            return preferences(context).getInt(AIR_QUALITY_INDEX, AMERICAN_AQI)
+        }
     }
 
     object UnitFormatter{
         fun temperature(context: Context, t: Double): String {
-            return when(Preference.temperatureUnit(context)) {
+            return when(Preference.temperatureUnit(context)){
                 Preference.FAHRENHEIT -> (t * 1.8 + 32.0).roundToInt().toString() + "°F"
                 Preference.CELSIUS -> t.roundToInt().toString() + "°C"
                 else -> t.roundToInt().toString() + "°C"
@@ -85,8 +93,7 @@ class Settings: AppCompatActivity(){
             return "$p hPa"
         }
 
-        fun uvIndex(context: Context, wm2: Double): String {
-            val index = (wm2 / 140.0).roundToInt()
+        fun uvIndex(context: Context, index: Int): String {
             if(index == 0) {
                 return "0"
             }
@@ -96,6 +103,35 @@ class Settings: AppCompatActivity(){
             else if(index <= 10) R.string.veryHigh
             else R.string.extreme
             return String.format(Locale.US, "%d (%s)", index, context.getString(descriptionId))
+        }
+
+        fun time(context: Context, hour: Int, minute: Int? = null): String {
+            if(DateFormat.is24HourFormat(context)){
+                return String.format(Locale.US, if(minute == null) "%02d" else "%02d.%02d", hour % 24, minute)
+            }
+            val amOrPm = if(hour % 24 < 12) "AM" else "PM"
+            val hour12 = if(hour % 12 == 0) 12 else hour % 12
+            val timeAsString = if(minute == null) hour12.toString() else String.format(Locale.US, "%d.%02d", hour12, minute)
+            return "$timeAsString $amOrPm"
+        }
+
+        fun airQualityIndex(context: Context, americanAqi: Int, europeanAqi: Int): String {
+            if(Preference.airQualityIndex(context) == Preference.EUROPEAN_AQI){
+                @StringRes val descriptionId = if(europeanAqi < 20) R.string.good
+                else if(europeanAqi < 40) R.string.fair
+                else if(europeanAqi < 60) R.string.moderate
+                else if(europeanAqi < 80) R.string.poor
+                else if(europeanAqi < 100) R.string.veryPoor
+                else R.string.extremelyPoor
+                return String.format(Locale.US, "%d (%s)", europeanAqi, context.getString(descriptionId))
+            }
+            @StringRes val descriptionId = if(americanAqi < 50) R.string.good
+            else if(americanAqi < 100) R.string.moderate
+            else if(americanAqi < 150) R.string.unhealthyForSensitiveGroups
+            else if(americanAqi < 200) R.string.unhealthy
+            else if(americanAqi < 300) R.string.veryUnhealthy
+            else R.string.hazardous
+            return String.format(Locale.US, "%d (%s)", americanAqi, context.getString(descriptionId))
         }
     }
 
@@ -107,34 +143,46 @@ class Settings: AppCompatActivity(){
         val celsius: RadioButton = this.findViewById(R.id.celsius)
         val fahrenheit: RadioButton = this.findViewById(R.id.fahrenheit)
         when(Preference.temperatureUnit(this)){
+            Preference.CELSIUS -> celsius.isChecked = true
             Preference.FAHRENHEIT -> fahrenheit.isChecked = true
-            else -> celsius.isChecked = true
         }
-        celsius.setOnClickListener {preferences(this).edit().putInt(Preference.TEMPERATURE_UNIT, Preference.CELSIUS).apply()}
-        fahrenheit.setOnClickListener {preferences(this).edit().putInt(Preference.TEMPERATURE_UNIT, Preference.FAHRENHEIT).apply()}
+        celsius.setOnClickListener{preferences(this).edit().putInt(Preference.TEMPERATURE_UNIT, Preference.CELSIUS).apply()}
+        fahrenheit.setOnClickListener{preferences(this).edit().putInt(Preference.TEMPERATURE_UNIT, Preference.FAHRENHEIT).apply()}
 
         //Initialize wind speed unit buttons
         val kmh: RadioButton = this.findViewById(R.id.kmh)
         val ms: RadioButton = this.findViewById(R.id.ms)
         val mph: RadioButton = this.findViewById(R.id.mph)
         when(Preference.windSpeedUnit(this)){
+            Preference.KMH -> kmh.isChecked = true
             Preference.MS -> ms.isChecked = true
             Preference.MPH -> mph.isChecked = true
-            else -> kmh.isChecked = true
         }
-        kmh.setOnClickListener {preferences(this).edit().putInt(Preference.WIND_SPEED_UNIT, Preference.KMH).apply()}
-        ms.setOnClickListener {preferences(this).edit().putInt(Preference.WIND_SPEED_UNIT, Preference.MS).apply()}
-        mph.setOnClickListener {preferences(this).edit().putInt(Preference.WIND_SPEED_UNIT, Preference.MPH).apply()}
+        kmh.setOnClickListener{preferences(this).edit().putInt(Preference.WIND_SPEED_UNIT, Preference.KMH).apply()}
+        ms.setOnClickListener{preferences(this).edit().putInt(Preference.WIND_SPEED_UNIT, Preference.MS).apply()}
+        mph.setOnClickListener{preferences(this).edit().putInt(Preference.WIND_SPEED_UNIT, Preference.MPH).apply()}
 
         //Initialize precipitation unit buttons
         val mm: RadioButton = this.findViewById(R.id.mm)
         val inches: RadioButton = this.findViewById(R.id.inches)
         when(Preference.precipitationUnit(this)){
+            Preference.MM -> mm.isChecked = true
             Preference.INCHES -> inches.isChecked = true
-            else -> mm.isChecked = true
         }
-        mm.setOnClickListener {preferences(this).edit().putInt(Preference.PRECIPITATION_UNIT, Preference.MM).apply()}
-        inches.setOnClickListener {preferences(this).edit().putInt(Preference.PRECIPITATION_UNIT, Preference.INCHES).apply()}
+        mm.setOnClickListener{preferences(this).edit().putInt(Preference.PRECIPITATION_UNIT, Preference.MM).apply()}
+        inches.setOnClickListener{preferences(this).edit().putInt(Preference.PRECIPITATION_UNIT, Preference.INCHES).apply()}
+
+        //Initialize air quality index buttons
+        val americanAqi: RadioButton = this.findViewById(R.id.americanAqi)
+        val europeanAqi: RadioButton = this.findViewById(R.id.europeanAqi)
+        when(Preference.airQualityIndex(this)){
+            Preference.AMERICAN_AQI -> americanAqi.isChecked = true
+            Preference.EUROPEAN_AQI -> europeanAqi.isChecked = true
+        }
+        americanAqi.setOnClickListener{preferences(this).edit().putInt(Preference.AIR_QUALITY_INDEX, Preference.AMERICAN_AQI).apply()}
+        europeanAqi.setOnClickListener{preferences(this).edit().putInt(Preference.AIR_QUALITY_INDEX, Preference.EUROPEAN_AQI).apply()}
+
+        //Initialize help, feedback and about buttons
         this.findViewById<Button>(R.id.help_button).setOnClickListener{
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/GustavLindberg99/AndroidWeather/blob/master/README.md"))
             startActivity(browserIntent)

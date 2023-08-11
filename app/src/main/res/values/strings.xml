@@ -93,4 +93,17 @@
     <string name="ok">OK</string>
     <string name="about_string"><![CDATA[Weather %1$s<br /><br />By Gustav Lindberg<br /><br />This app is licensed under the <a href="%4$s">GNU AGPL 3.0</a>.<br /><br />Source code: <a href="%2$s">%2$s</a><br /><br />Weather data from <a href="%3$s">%3$s</a>]]></string>
     <string name="feedback">Feedback</string>
+    <string name="precipitationProbability">Precipitation risk</string>
+    <string name="airQualityIndex">Air quality index</string>
+    <string name="american">American</string>
+    <string name="european">European</string>
+    <string name="good">Good</string>
+    <string name="fair">Fair</string>
+    <string name="poor">Poor</string>
+    <string name="veryPoor">Very poor</string>
+    <string name="extremelyPoor">Extremely poor</string>
+    <string name="unhealthyForSensitiveGroups">Unhealthy for sensitive groups</string>
+    <string name="unhealthy">Unhealthy</string>
+    <string name="veryUnhealthy">Very unhealthy</string>
+    <string name="hazardous">Hazardous</string>
 </resources>
