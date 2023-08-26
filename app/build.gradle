@@ -10,8 +10,8 @@ android {
         applicationId "io.github.gustavlindberg99.weather"
         minSdk 23
         targetSdk 33
-        versionCode 6    //Increment this by 1 at each new version
-        versionName "1.1.0"    //Change this to the appropriate number at each new version
+        versionCode 7    //Increment this by 1 at each new version
+        versionName "1.1.1"    //Change this to the appropriate number at each new version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.google.guava:guava:30.1.1-jre'
     implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.8'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.9'
     implementation 'com.github.luben:zstd-jni:1.5.0-4@aar'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.matthew-tamlin:sliding-intro-screen:3.2.0'

@@ -12,8 +12,8 @@ fun parseDate(date: String, timezone: String): Calendar? {
     val calendar = Calendar.getInstance()
     calendar.timeZone = TimeZone.getTimeZone(timezone)
     calendar.time = format.parse(date.replace('T', ' ')) ?: throw ParseException("Null returned when parsing date $date", 0)
-    if(calendar.timeInMillis <= 0){
-        //The API returns a date at or before the Unix epoch when it should return an invalid date.
+    if(calendar[Calendar.YEAR] < 2000){
+        //The API returns a date sometime a long time ago when it should return an invalid date (usually around the Unix epoch, but sometimes not exactly at the Unix epoch).
         return null
     }
     return calendar
