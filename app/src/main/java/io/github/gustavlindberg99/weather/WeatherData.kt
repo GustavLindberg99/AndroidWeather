@@ -36,7 +36,7 @@ class WeatherData(private val _json: String, timezone: String){
     val hourlyWindDirection: List<Double>
     val hourlyUvIndex: List<Int>
     val hourlyPrecipitationProbability: List<Int>
-    val hourlyIsDay: List<Boolean>
+    private val hourlyIsDay: List<Boolean>
 
     //Daily variables (length: 7)
     val sunrises: List<Calendar?>
@@ -53,23 +53,6 @@ class WeatherData(private val _json: String, timezone: String){
         this.now = parseDate(currentWeather.getString("time"), timezone) ?: Calendar.getInstance()
         this.now.timeZone = TimeZone.getTimeZone(timezone)
         val currentHour: Int = now[Calendar.HOUR_OF_DAY]
-
-        //Current variables
-        this.currentTemperature = currentWeather.getDouble("temperature")
-        this.currentCloudCover = totalCloudCover(hourly.getJSONArray("cloudcover_low").getInt(currentHour).coerceIn(0..100), hourly.getJSONArray("cloudcover_mid").getInt(currentHour).coerceIn(0..100))
-        this.currentPrecipitation = hourly.getJSONArray("precipitation").getDouble(currentHour).coerceAtLeast(0.0)
-        this.currentWeatherCode = weatherCodeFromData(currentWeather.getInt("weathercode"), this.currentCloudCover, this.currentPrecipitation)
-        this.currentWindSpeed = currentWeather.getDouble("windspeed").coerceAtLeast(0.0)
-        this.currentWindDirection = currentWeather.getDouble("winddirection")
-        this.currentHumidity = hourly.getJSONArray("relativehumidity_2m").getInt(currentHour).coerceIn(0..100)
-        this.currentApparentTemperature = hourly.getJSONArray("apparent_temperature").getInt(currentHour).toDouble()
-        this.currentPressure = hourly.getJSONArray("pressure_msl").getDouble(currentHour).coerceAtLeast(0.0)
-        this.currentUvIndex = hourly.getJSONArray("uv_index").getDouble(currentHour).roundToInt().coerceAtLeast(0)
-        this.currentDewPoint = hourly.getJSONArray("dewpoint_2m").getDouble(currentHour)
-        this.currentPrecipitationProbability = hourly.getJSONArray("precipitation_probability").getInt(currentHour).coerceIn(0..100)
-        this.currentAmericanAqi = hourly.getJSONArray("us_aqi").getInt(currentHour).coerceAtLeast(0)
-        this.currentEuropeanAqi = hourly.getJSONArray("european_aqi").getInt(currentHour).coerceAtLeast(0)
-        this.currentIsDay = hourly.getJSONArray("is_day").getInt(currentHour) != 0
 
         //Hourly variables
         val hourlyWeatherCode = mutableListOf<Int>()
@@ -133,6 +116,43 @@ class WeatherData(private val _json: String, timezone: String){
         this.maxTemperature = maxTemperature
         this.minTemperature = minTemperature
         this.dailyWeatherCode = dailyWeatherCode
+
+        //Current variables
+        this.currentTemperature = currentWeather.getDouble("temperature")
+        this.currentCloudCover = totalCloudCover(hourly.getJSONArray("cloudcover_low").getInt(currentHour).coerceIn(0..100), hourly.getJSONArray("cloudcover_mid").getInt(currentHour).coerceIn(0..100))
+        this.currentPrecipitation = hourly.getJSONArray("precipitation").getDouble(currentHour).coerceAtLeast(0.0)
+        this.currentWeatherCode = weatherCodeFromData(currentWeather.getInt("weathercode"), this.currentCloudCover, this.currentPrecipitation)
+        this.currentWindSpeed = currentWeather.getDouble("windspeed").coerceAtLeast(0.0)
+        this.currentWindDirection = currentWeather.getDouble("winddirection")
+        this.currentHumidity = hourly.getJSONArray("relativehumidity_2m").getInt(currentHour).coerceIn(0..100)
+        this.currentApparentTemperature = hourly.getJSONArray("apparent_temperature").getInt(currentHour).toDouble()
+        this.currentPressure = hourly.getJSONArray("pressure_msl").getDouble(currentHour).coerceAtLeast(0.0)
+        this.currentUvIndex = hourly.getJSONArray("uv_index").getDouble(currentHour).roundToInt().coerceAtLeast(0)
+        this.currentDewPoint = hourly.getJSONArray("dewpoint_2m").getDouble(currentHour)
+        this.currentPrecipitationProbability = hourly.getJSONArray("precipitation_probability").getInt(currentHour).coerceIn(0..100)
+        this.currentAmericanAqi = hourly.getJSONArray("us_aqi").getInt(currentHour).coerceAtLeast(0)
+        this.currentEuropeanAqi = hourly.getJSONArray("european_aqi").getInt(currentHour).coerceAtLeast(0)
+        val sunrise: Calendar? = this.sunrises[0]
+        val sunriseHour: Int? = sunrise?.get(Calendar.HOUR_OF_DAY)
+        val sunset: Calendar? = this.sunsets[0]
+        val sunsetHour: Int? = sunset?.get(Calendar.HOUR_OF_DAY)
+        this.currentIsDay = if(currentHour == sunriseHour && currentHour == sunsetHour){
+            if(sunrise < sunset){
+                sunrise < now && sunset > now
+            }
+            else{
+                sunrise < now || sunset > now
+            }
+        }
+        else if(currentHour == sunriseHour){
+            sunrise < now
+        }
+        else if(currentHour == sunsetHour){
+            sunset > now
+        }
+        else{
+            hourly.getJSONArray("is_day").getInt(currentHour) != 0
+        }
     }
 
     fun currentDayOrNight(): String =

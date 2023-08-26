@@ -279,7 +279,7 @@ class WeatherFragment: Fragment(){
             if(sunrise != null){
                 var offset = 0
                 if(day == 0){
-                    if(sunrise.timeInMillis < now.timeInMillis){
+                    if(sunrise < now){
                         sunrise = data.sunrises[1]
                         offset = 23 - currentHour
                     }
@@ -307,7 +307,7 @@ class WeatherFragment: Fragment(){
             if(sunset != null){
                 var offset = 0
                 if(day == 0){
-                    if(sunset.timeInMillis < now.timeInMillis){
+                    if(sunset < now){
                         sunset = data.sunsets[1]
                         offset = 23 - currentHour
                     }
@@ -322,7 +322,7 @@ class WeatherFragment: Fragment(){
                     sunsetView.setTextColor(this.requireActivity().getColor(R.color.white))
                     sunsetView.text = Settings.UnitFormatter.time(this.requireActivity(), sunset[Calendar.HOUR_OF_DAY], sunset[Calendar.MINUTE]) + "\n" + this.getString(R.string.sunset)
                     sunsetView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.sunset)
-                    val index: Int = sunset[Calendar.HOUR_OF_DAY] + offset + 1 + if(sunrise != null && sunrise.timeInMillis < sunset.timeInMillis) 1 else 0
+                    val index: Int = sunset[Calendar.HOUR_OF_DAY] + offset + 1 + if(sunrise != null && sunrise < sunset) 1 else 0
                     hourlyWeatherBarLayout.addView(sunsetView, index)
 
                     val sunsetBorder = View(requireActivity())
