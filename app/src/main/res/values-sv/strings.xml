@@ -107,4 +107,5 @@
     <string name="unhealthy">Ohälsosam</string>
     <string name="veryUnhealthy">Mycket ohälsosam</string>
     <string name="hazardous">Farlig</string>
+    <string name="unknownError">Okänt fel</string>
 </resources>

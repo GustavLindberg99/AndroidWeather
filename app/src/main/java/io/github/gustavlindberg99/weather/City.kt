@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
@@ -142,7 +143,7 @@ class City(private val _context: Context, val name: String, val latitude: Double
         preferenceEditor.apply()
     }
 
-    fun updateWeatherFromServer(successCallback: () -> Unit, errorCallback: () -> Unit){
+    fun updateWeatherFromServer(successCallback: () -> Unit, errorCallback: (String) -> Unit){
         val urls = listOf(String.format(
             "https://api.open-meteo.com/v1/forecast"+
             "?latitude=%s&longitude=%s&timezone=%s&current_weather=true"+
@@ -163,10 +164,12 @@ class City(private val _context: Context, val name: String, val latitude: Double
         val queue: RequestQueue = Volley.newRequestQueue(this._context)
         val responses = mutableListOf<String>()
 
-        val handleError: (Exception) -> Unit = {
+        val handleError = {e: Exception ->
             //The error handler is also run on 4xx errors (this was unclear from the documentation so I tested it)
             queue.cancelAll{true}
-            errorCallback()
+            val errorMessage = if(e is VolleyError) this._context.getString(R.string.noInternetConnection)
+                               else String.format(this._context.getString(R.string.serverError), e.message ?: this._context.getString(R.string.unknownError))
+            errorCallback(errorMessage)
         }
 
         val handleResponse = {lastResponse: String ->
