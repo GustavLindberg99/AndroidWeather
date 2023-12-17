@@ -125,9 +125,9 @@ class WeatherFragment: Fragment(){
     }
 
     private fun refreshFromServer(){
-        this._city.updateWeatherFromServer({this.setLocation(this._city)}, {
+        this._city.updateWeatherFromServer({this.setLocation(this._city)}, {errorMessage: String ->
             if(this._showErrorMessage && this.activity != null) {
-                Toast.makeText(this.requireActivity(), R.string.noInternetConnection, Toast.LENGTH_LONG).show()
+                Toast.makeText(this.requireActivity(), errorMessage, Toast.LENGTH_LONG).show()
                 this._showErrorMessage = false
             }
         })

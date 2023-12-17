@@ -1,0 +1,1 @@
+This folder is not used directly by AndroidStudio. If you make changes here, make sure to copy them to `app/src/main/res/drawable`. For PNG files, this means simply copying the file, and possibly renaming it to the corresponding name. For SVG files, this means converting them into XML files. In Android Studio, this can be done by doing File > New > Vector Asset > Local File.
