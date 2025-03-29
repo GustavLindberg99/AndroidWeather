@@ -1,0 +1,38 @@
+[versions]
+agp = "8.8.1"
+appcompatVersion = "1.6.1"
+commonsText = "1.9"
+firebaseCrashlyticsBuildtools = "2.9.9"
+guava = "30.1.1-jre"
+kotlin = "1.9.24"
+coreKtx = "1.15.0"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+legacySupportV4 = "1.0.0"
+material = "1.12.0"
+slidingIntroScreen = "3.2.0"
+volley = "1.2.1"
+zstdJni = "1.5.0-4"
+
+[libraries]
+androidx-appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacySupportV4" }
+commons-text = { module = "org.apache.commons:commons-text", version.ref = "commonsText" }
+firebase-crashlytics-buildtools = { module = "com.google.firebase:firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+sliding-intro-screen = { module = "com.matthew-tamlin:sliding-intro-screen", version.ref = "slidingIntroScreen" }
+volley = { module = "com.android.volley:volley", version.ref = "volley" }
+zstd-jni = { module = "com.github.luben:zstd-jni", version.ref = "zstdJni" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+

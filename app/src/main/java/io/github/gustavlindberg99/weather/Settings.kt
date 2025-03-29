@@ -198,7 +198,7 @@ class Settings: AppCompatActivity(){
             textView.setLinkTextColor(Color.BLUE)
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
             val value = TypedValue()
-            if(this.theme.resolveAttribute(R.attr.dialogPreferredPadding, value, true)){
+            if(this.theme.resolveAttribute(androidx.appcompat.R.attr.dialogPreferredPadding, value, true)){
                 val padding = TypedValue.complexToDimensionPixelSize(value.data, this.resources.displayMetrics)
                 textView.setPadding(padding, dpToPx(8.0), padding, 0)
             }

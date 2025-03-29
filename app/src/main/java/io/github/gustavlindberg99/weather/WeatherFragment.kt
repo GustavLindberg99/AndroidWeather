@@ -288,7 +288,7 @@ class WeatherFragment: Fragment(){
                     }
                 }
                 if(sunrise != null){
-                    val sunriseView = Button(requireActivity(), null, R.attr.buttonBarButtonStyle)
+                    val sunriseView = Button(requireActivity(), null, androidx.appcompat.R.attr.buttonBarButtonStyle)
                     this._sunriseViews[day] = sunriseView
                     sunriseView.isEnabled = false
                     sunriseView.setTextColor(this.requireActivity().getColor(R.color.white))
@@ -316,7 +316,7 @@ class WeatherFragment: Fragment(){
                     }
                 }
                 if(sunset != null){
-                    val sunsetView = Button(requireActivity(), null, R.attr.buttonBarButtonStyle)
+                    val sunsetView = Button(requireActivity(), null, androidx.appcompat.R.attr.buttonBarButtonStyle)
                     this._sunsetViews[day] = sunsetView
                     sunsetView.isEnabled = false
                     sunsetView.setTextColor(this.requireActivity().getColor(R.color.white))
