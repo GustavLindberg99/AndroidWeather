@@ -12,6 +12,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
@@ -24,13 +25,13 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
-import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator
 import java.io.IOException
 import java.util.*
 
 class MainActivity: AppCompatActivity(), LocationListener {
     private val _fragmentAdapter: FragmentAdapter by lazy{FragmentAdapter(this.supportFragmentManager)}
-    private val _dotIndicator: DotIndicator by lazy{this.findViewById(R.id.dot_indicator)}
+    private val _dotIndicator: LinearLayout by lazy{this.findViewById(R.id.dot_indicator)}
+    private val _viewPager: ViewPager by lazy{this.findViewById(R.id.viewpager)}
     private var _askForLocationPermission: Boolean = true
 
     private inner class FragmentAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
@@ -92,16 +93,14 @@ class MainActivity: AppCompatActivity(), LocationListener {
         this.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         //Set the fragments
-        val viewPager: ViewPager = this.findViewById(R.id.viewpager)
-        viewPager.adapter = this._fragmentAdapter
+        this._viewPager.adapter = this._fragmentAdapter
 
         //Set the dot indicator
-        this._dotIndicator.numberOfItems = this._fragmentAdapter.count
-        this._dotIndicator.setSelectedItem(0, false)
-        viewPager.addOnPageChangeListener(object: OnPageChangeListener{
+        this.updateNumberOfDots()
+        this._viewPager.addOnPageChangeListener(object: OnPageChangeListener{
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int){}
             override fun onPageSelected(position: Int){
-                this@MainActivity._dotIndicator.setSelectedItem(position, true)
+                this@MainActivity.setSelectedDot(position)
             }
             override fun onPageScrollStateChanged(state: Int){}
         })
@@ -117,13 +116,12 @@ class MainActivity: AppCompatActivity(), LocationListener {
         //Initialize the city list button
         val cityListLauncher = this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result: ActivityResult ->
             this._fragmentAdapter.notifyDataSetChanged()
-            this._dotIndicator.numberOfItems = this._fragmentAdapter.count
             val intent = result.data
             if(intent != null){
-                val selectedIndex = intent.getIntExtra(CityList.SELECTED_CITY, viewPager.currentItem)
-                this._dotIndicator.setSelectedItem(selectedIndex, false)
-                viewPager.setCurrentItem(selectedIndex, false)
+                val selectedIndex = intent.getIntExtra(CityList.SELECTED_CITY, this@MainActivity._viewPager.currentItem)
+                this@MainActivity._viewPager.setCurrentItem(selectedIndex, false)
             }
+            this.updateNumberOfDots()
         }
         this.findViewById<View>(R.id.city_list_button).setOnClickListener{cityListLauncher.launch(Intent(this, CityList::class.java))}
 
@@ -181,7 +179,7 @@ class MainActivity: AppCompatActivity(), LocationListener {
                     currentLocationFragment?.setLocation(city)
                     if(!previousLocationKnown){
                         this._fragmentAdapter.notifyDataSetChanged()
-                        this._dotIndicator.numberOfItems = this._fragmentAdapter.count
+                        this.updateNumberOfDots()
                     }
                 }, {})
             }
@@ -198,7 +196,7 @@ class MainActivity: AppCompatActivity(), LocationListener {
     override fun onStatusChanged(provider: String, status: Int, extras: Bundle){}
 
     fun selectedCity(): City? {
-        var selectedIndex: Int = this._dotIndicator.selectedItemIndex
+        var selectedIndex: Int = this._viewPager.currentItem
         val currentLocation: City? = City.currentLocation(this)
         if(currentLocation != null){
             selectedIndex--
@@ -211,5 +209,39 @@ class MainActivity: AppCompatActivity(), LocationListener {
             return currentLocation
         }
         return cities[selectedIndex]
+    }
+
+    /**
+     * Sets the selected dot in the dot indicator to the given index.
+     *
+     * @param index The index to set (starting at 0).
+     */
+    private fun setSelectedDot(index: Int){
+        for(i in 0..<this._dotIndicator.childCount){
+            val size = if(i == index) 20 else 15
+            this._dotIndicator.getChildAt(i).layoutParams = LinearLayout.LayoutParams(size, size)
+        }
+    }
+
+    /**
+     * Sets the number of dots in the dot indicator to the current number of fragments, and selects the correct dot based on which fragment is visible.
+     */
+    private fun updateNumberOfDots(){
+        val newNumber = this._fragmentAdapter.count
+        val currentNumber = this._dotIndicator.childCount
+        if(newNumber > currentNumber){
+            for(i in currentNumber..<newNumber){
+                val dot = ImageView(this)
+                dot.setImageResource(R.drawable.circle_marker)
+                this._dotIndicator.addView(dot)
+            }
+        }
+        else if(currentNumber > newNumber){
+            for(i in newNumber..<currentNumber){
+                this._dotIndicator.removeViewAt(i)
+            }
+        }
+
+        this.setSelectedDot(this._viewPager.currentItem)
     }
 }

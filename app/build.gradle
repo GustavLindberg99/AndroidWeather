@@ -1,17 +1,18 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    compileSdk 34
+    namespace 'io.github.gustavlindberg99.weather'
+    compileSdk 35
 
     defaultConfig {
         applicationId "io.github.gustavlindberg99.weather"
         minSdk 23
-        targetSdk 34
-        versionCode 8    //Increment this by 1 at each new version
-        versionName "1.1.2"    //Change this to the appropriate number at each new version
+        targetSdk 35
+        versionCode 9    //Increment this by 1 at each new version
+        versionName "1.1.3"    //Change this to the appropriate number at each new version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,24 +24,22 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-    buildFeatures {
-        viewBinding true
+    kotlinOptions {
+        jvmTarget = '11'
     }
-    namespace 'io.github.gustavlindberg99.weather'
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'com.google.guava:guava:30.1.1-jre'
-    implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.9'
-    implementation 'com.github.luben:zstd-jni:1.5.0-4@aar'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.matthew-tamlin:sliding-intro-screen:3.2.0'
-    implementation 'org.apache.commons:commons-text:1.9'
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation libs.androidx.appcompat.v161
+    implementation libs.material
+    implementation libs.guava
+    implementation libs.volley
+    implementation libs.firebase.crashlytics.buildtools
+    implementation libs.zstd.jni
+    implementation libs.androidx.legacy.support.v4
+    implementation libs.commons.text
+    implementation libs.androidx.core.ktx
 }

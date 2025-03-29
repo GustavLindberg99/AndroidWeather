@@ -50,12 +50,18 @@
             android:layout_height="48dp"
             style="?android:attr/buttonBarButtonStyle"
             android:contentDescription="@string/settings"/>
-        <com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator
+        <LinearLayout
             android:id="@+id/dot_indicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:gravity="center"/>
+        <!--com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/-->
         <ImageButton
             android:id="@+id/city_list_button"
             android:src="@drawable/list"
