@@ -218,7 +218,7 @@ class MainActivity: AppCompatActivity(), LocationListener {
      */
     private fun setSelectedDot(index: Int){
         for(i in 0..<this._dotIndicator.childCount){
-            val size = if(i == index) 20 else 15
+            val size = dpToPx(if(i == index) 12.0 else 8.0)
             this._dotIndicator.getChildAt(i).layoutParams = LinearLayout.LayoutParams(size, size)
         }
     }

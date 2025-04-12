@@ -104,7 +104,7 @@ class CityList: AppCompatActivity(){
                     MotionEvent.ACTION_UP -> {
                         view.performClick()
                         layoutParams.setMargins(0, 0, 0, 0)
-                        if(offset > 0){
+                        if(offset > dpToPx(20.0)){
                             locationBarContainer.removeView(locationBar)
                             fixAddCityButtonPosition()
                             city.removeLocation()
@@ -114,10 +114,10 @@ class CityList: AppCompatActivity(){
                         isDragging = true
                         layoutParams.setMargins(-offset, 0, offset, 0)
                     }
-                    else -> return@setOnTouchListener false
+                    else -> return false
                 }
                 locationBar.layoutParams = layoutParams
-                return@setOnTouchListener true
+                return true
             })
         }
 
