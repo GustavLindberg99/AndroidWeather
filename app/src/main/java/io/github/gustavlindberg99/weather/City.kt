@@ -159,6 +159,12 @@ class City(private val _context: Context, val name: String, val latitude: Double
             URLEncoder.encode(latitude.toString(), StandardCharsets.UTF_8.name()),
             URLEncoder.encode(longitude.toString(), StandardCharsets.UTF_8.name()),
             URLEncoder.encode(timezone, StandardCharsets.UTF_8.name())
+        ), String.format(
+            "https://marine-api.open-meteo.com/v1/marine"+
+            "?latitude=%s&longitude=%s&timezone=%s&hourly=sea_surface_temperature",
+            URLEncoder.encode(latitude.toString(), StandardCharsets.UTF_8.name()),
+            URLEncoder.encode(longitude.toString(), StandardCharsets.UTF_8.name()),
+            URLEncoder.encode(timezone, StandardCharsets.UTF_8.name())
         ))
 
         val queue: RequestQueue = Volley.newRequestQueue(this._context)

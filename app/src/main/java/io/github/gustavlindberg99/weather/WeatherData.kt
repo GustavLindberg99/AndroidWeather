@@ -28,6 +28,7 @@ class WeatherData(private val _json: String, timezone: String){
     val currentAmericanAqi: Int
     val currentEuropeanAqi: Int
     val currentIsDay: Boolean
+    val currentSeaTemperature: Double    //NaN in locations that aren't by the sea
 
     //Hourly variables (length: 168)
     val hourlyWeatherCode: List<Int>
@@ -132,6 +133,7 @@ class WeatherData(private val _json: String, timezone: String){
         this.currentPrecipitationProbability = hourly.getJSONArray("precipitation_probability").getInt(currentHour).coerceIn(0..100)
         this.currentAmericanAqi = hourly.getJSONArray("us_aqi").getInt(currentHour).coerceAtLeast(0)
         this.currentEuropeanAqi = hourly.getJSONArray("european_aqi").getInt(currentHour).coerceAtLeast(0)
+        this.currentSeaTemperature = hourly.getJSONArray("sea_surface_temperature").optDouble(currentHour)
         val sunrise: Calendar? = this.sunrises[0]
         val sunriseHour: Int? = sunrise?.get(Calendar.HOUR_OF_DAY)
         val sunset: Calendar? = this.sunsets[0]

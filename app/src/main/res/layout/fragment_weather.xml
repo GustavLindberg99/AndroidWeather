@@ -343,6 +343,47 @@
                         android:textSize="28sp"
                         tools:ignore="HardcodedText"/>
                 </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/seaTemperature"
+                        android:textSize="16sp"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="16sp"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/current_sea_temperature"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="28sp"
+                        tools:ignore="HardcodedText"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/empty_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="28sp"
+                        tools:ignore="HardcodedText"/>
+                </TableRow>
             </TableLayout>
         </LinearLayout>
     </ScrollView>

@@ -108,4 +108,5 @@
     <string name="veryUnhealthy">Très malsain</string>
     <string name="hazardous">Hasardeux</string>
     <string name="unknownError">Erreur inconnue</string>
+    <string name="seaTemperature">Température de la mer</string>
 </resources>

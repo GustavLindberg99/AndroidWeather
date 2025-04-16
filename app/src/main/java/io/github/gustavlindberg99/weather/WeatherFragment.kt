@@ -62,6 +62,7 @@ class WeatherFragment: Fragment(){
     private val _currentDewPoint: TextView get() = this._fragmentView.findViewById(R.id.current_dew_point)
     private val _currentPrecipitationProbability: TextView get() = this._fragmentView.findViewById(R.id.current_precipitation_probability)
     private val _currentAirQualityIndex: TextView get() = this._fragmentView.findViewById(R.id.current_air_quality_index)
+    private val _currentSeaTemperature: TextView get() = this._fragmentView.findViewById(R.id.current_sea_temperature)
     private lateinit var _city: City
     private var _showErrorMessage: Boolean = true
 
@@ -192,6 +193,7 @@ class WeatherFragment: Fragment(){
         this._currentDewPoint.text = Settings.UnitFormatter.temperature(this.requireActivity(), data.currentDewPoint)
         this._currentPrecipitationProbability.text = Settings.UnitFormatter.percentage(data.currentPrecipitationProbability)
         this._currentAirQualityIndex.text = Settings.UnitFormatter.airQualityIndex(this.requireActivity(), data.currentAmericanAqi, data.currentEuropeanAqi)
+        this._currentSeaTemperature.text = if(data.currentSeaTemperature.isNaN()) "--" else Settings.UnitFormatter.temperature(this.requireActivity(), data.currentSeaTemperature)
 
         //Update the background (only if this fragment is the one that's currently visible)
         if(this._city == (this.requireActivity() as MainActivity).selectedCity()){

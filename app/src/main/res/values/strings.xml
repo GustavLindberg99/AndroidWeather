@@ -107,4 +107,5 @@
     <string name="veryUnhealthy">Very unhealthy</string>
     <string name="hazardous">Hazardous</string>
     <string name="unknownError">Unknown error</string>
+    <string name="seaTemperature">Sea temperature</string>
 </resources>
