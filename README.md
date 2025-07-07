@@ -1,7 +1,7 @@
 # Weather
 ## Installation
 
-This app can be downloaded on Google Play [here](https://play.google.com/store/apps/details?id=io.github.gustavlindberg99.weather).
+This app can be downloaded on Google Play [here](https://play.google.com/store/apps/details?id=io.github.gustavlindberg99.weather). This app is not available in China, Cuba, Iran, Russia or Vietnam due to these countries' governments blocking certain web services needed for the app to work.
 
 ## Usage
 ### Basic Usage

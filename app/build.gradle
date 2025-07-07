@@ -11,8 +11,8 @@ android {
         applicationId "io.github.gustavlindberg99.weather"
         minSdk 23
         targetSdk 35
-        versionCode 11    //Increment this by 1 at each new version
-        versionName "1.2.0"    //Change this to the appropriate number at each new version
+        versionCode 12    //Increment this by 1 at each new version
+        versionName "1.2.1"    //Change this to the appropriate number at each new version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
