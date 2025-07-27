@@ -317,7 +317,19 @@ private fun totalCloudCover(cloudCoverLow: Int, cloudCoverMid: Int): Int {
     return 100 - totalSunCover
 }
 
-//Since the weather code from the API isn't always accurate, correct the weather code so that (1) cloudy or not is based on the cloud cover, (2) light or heavy rain is based on the amount of precipitation, and (3) the icon with a sun and rain for showers is only shown if the cloud cover isn't too high
+/**
+ * Since the weather code from the API isn't always accurate, correct the weather code so that:
+ *  - Cloudy or not is based on the cloud cover
+ *  - Light or heavy rain is based on the amount of precipitation
+ *  - The icon with a sun and rain for showers is only shown if the cloud cover isn't too high
+ *  - Drizzle is always converted to rain because the API often returns drizzle incorrectly, and there's no reliable way of knowing if it's actually drizzle
+ *
+ * @param weatherCode   The weather code provided by the API, which isn't always accurate.
+ * @param cloudCover    The cloud cover.
+ * @param precipitation The precipitation.
+ *
+ * @return A weather code which is more accurate.
+ */
 private fun weatherCodeFromData(weatherCode: Int, cloudCover: Int, precipitation: Double): Int {
     if(listOf(45, 48, 56, 57, 66, 67, 77, 95, 96, 99).contains(weatherCode)){
         return weatherCode    //For fog, thunderstorms, freezing rain/drizzle and snow grains, just keep the weather code given by the API
@@ -332,12 +344,7 @@ private fun weatherCodeFromData(weatherCode: Int, cloudCover: Int, precipitation
     val isRain: Boolean = weatherCode / 10 == 6 || listOf(80, 81, 82).contains(weatherCode)
     val isSnow: Boolean = weatherCode / 10 == 7 || listOf(85, 86).contains(weatherCode)
     val isSunny: Boolean = cloudCover < 75 && (weatherCode < 10 || weatherCode / 10 == 8)
-    return if(isDrizzle) when(intensity){
-        2 -> 53
-        3 -> 55
-        else -> 51
-    }
-    else if(isSunny) when(intensity){
+    return if(isSunny) when(intensity){
         1 -> if(isSnow) 85 else 80
         2 -> if(isSnow) 85 else 81
         3 -> if(isSnow) 86 else 82
@@ -353,7 +360,7 @@ private fun weatherCodeFromData(weatherCode: Int, cloudCover: Int, precipitation
         3 -> 75
         else -> 71
     }
-    else if(isRain) when(intensity){
+    else if(isDrizzle || isRain) when(intensity){
         1 -> 61
         2 -> 63
         3 -> 65
