@@ -1,73 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
     <ImageView
         android:id="@+id/background_image"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:src="@color/skyBlue"
         android:scaleType="centerCrop"
-        tools:ignore="ContentDescription"/>
+        android:src="@color/skyBlue"
+        tools:ignore="ContentDescription" />
+
     <ImageView
         android:id="@+id/background_gradient"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="100dp"
         android:src="@drawable/gradient"
-        tools:ignore="ContentDescription"/>
+        tools:ignore="ContentDescription" />
+
     <ImageView
         android:id="@+id/background_color"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="250dp"
         android:src="@color/white"
-        tools:ignore="ContentDescription"/>
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="horizontal"
-        android:paddingTop="32dp"
-        android:layout_margin="8dp">
+        android:paddingTop="32dp">
+
         <ImageButton
             android:id="@+id/settings_button"
-            android:src="@drawable/settings"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            style="?android:attr/buttonBarButtonStyle"
-            android:contentDescription="@string/settings"/>
+            android:contentDescription="@string/settings"
+            android:src="@drawable/settings" />
+
         <LinearLayout
             android:id="@+id/dot_indicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:gravity="center"/>
-        <!--com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/-->
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal" />
+
         <ImageButton
             android:id="@+id/city_list_button"
-            android:src="@drawable/list"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            style="?android:attr/buttonBarButtonStyle"
-            android:contentDescription="@string/cityList"/>
+            android:contentDescription="@string/cityList"
+            android:src="@drawable/list" />
     </LinearLayout>
 </FrameLayout>

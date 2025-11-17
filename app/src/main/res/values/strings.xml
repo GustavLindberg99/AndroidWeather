@@ -108,4 +108,5 @@
     <string name="hazardous">Hazardous</string>
     <string name="unknownError">Unknown error</string>
     <string name="seaTemperature">Sea temperature</string>
+    <string name="delete">Delete</string>
 </resources>

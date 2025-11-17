@@ -109,4 +109,5 @@
     <string name="hazardous">Farlig</string>
     <string name="unknownError">Okänt fel</string>
     <string name="seaTemperature">Havstemperatur</string>
+    <string name="delete">Ta bort</string>
 </resources>

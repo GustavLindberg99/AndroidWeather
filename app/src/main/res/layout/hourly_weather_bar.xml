@@ -1,333 +1,382 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <TableRow
-                android:id="@+id/daily_weather_bar">
+
+            <TableRow android:id="@+id/daily_weather_bar">
+
                 <Button
-                    android:textColor="@color/white"
                     android:id="@+id/hour_0"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="00\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_1"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="01\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_2"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="02\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_3"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="03\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_4"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="04\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_5"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="05\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_6"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="06\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_7"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="07\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_8"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="08\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_9"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="09\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_10"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="10\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_11"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="11\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_12"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="12\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_13"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="13\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_14"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="14\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_15"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="15\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_16"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="16\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_17"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="17\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_18"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="18\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_19"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="19\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_20"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="20\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_21"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="21\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_22"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/wmo_0_day"
                     android:text="22\n--"
-                    android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
-                <Button
                     android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <Button
                     android:id="@+id/hour_23"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="23\n--"
                     android:drawableBottom="@drawable/wmo_0_day"
-                    tools:ignore="HardcodedText"
-                    style="?android:attr/buttonBarButtonStyle"/>
+                    android:text="23\n--"
+                    android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
             </TableRow>
-            <TableRow
-                android:id="@+id/hourly_borders">
+
+            <TableRow android:id="@+id/hourly_borders">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
             </TableRow>
         </TableLayout>
     </HorizontalScrollView>
@@ -338,73 +387,81 @@
         android:layout_height="wrap_content"
         android:stretchColumns="*"
         android:visibility="gone">
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginBottom="0dp">
+
             <TextView
-                android:textColor="@color/white"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1.2"
-                android:layout_height="wrap_content"
                 android:text="@string/wind"
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"/>
-            <TextView
                 android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
                 android:text="@string/precipitationProbability"
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"/>
-            <TextView
                 android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
                 android:text="@string/uvIndex"
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"/>
+                android:textColor="@color/white"
+                android:textSize="16sp" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginTop="0dp">
+
             <TextView
-                android:textColor="@color/white"
                 android:id="@+id/wind"
                 android:layout_width="0dp"
-                android:layout_weight="1.2"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.2"
                 android:text="-- km/h"
-                android:textSize="20sp"
-                tools:ignore="HardcodedText"/>
-            <TextView
                 android:textColor="@color/white"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
                 android:id="@+id/precipitation_probability"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="--%"
-                android:textSize="20sp"
-                tools:ignore="HardcodedText"/>
-            <TextView
                 android:textColor="@color/white"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
                 android:id="@+id/uv_index"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="--"
+                android:textColor="@color/white"
                 android:textSize="20sp"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText" />
         </TableRow>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/white"/>
+            android:background="@color/white" />
     </TableLayout>
 </LinearLayout>

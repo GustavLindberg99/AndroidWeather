@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".CityList"
     android:layout_width="match_parent"
-    android:layout_height="64dp">
+    android:layout_height="64dp"
+    tools:context=".CityList">
 
     <ImageView
         android:id="@+id/city_list_item_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@color/skyBlue"
         android:scaleType="centerCrop"
-        tools:ignore="ContentDescription"/>
+        android:src="@color/skyBlue"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,27 +21,38 @@
 
         <TextView
             android:id="@+id/city_name"
-            android:text="@string/unknownLocation"
-            android:textSize="24sp"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:text="@string/unknownLocation"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/city_list_temperature"
-            android:text="--°C"
-            android:textSize="32sp"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:paddingStart="16dp"
-            tools:ignore="HardcodedText,RtlSymmetry"/>
+            android:text="--°C"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            tools:ignore="HardcodedText,RtlSymmetry" />
+
+        <ImageButton
+            android:id="@+id/delete_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:adjustViewBounds="true"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/delete"
+            android:scaleType="fitStart"
+            android:src="@drawable/trash" />
     </LinearLayout>
 </RelativeLayout>

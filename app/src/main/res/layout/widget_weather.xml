@@ -1,5 +1,4 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/weather_widget"
     android:layout_width="match_parent"
@@ -11,42 +10,45 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@color/skyBlue"
-        tools:ignore="ContentDescription"/>
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/weather_widget_weather_image"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:src="@drawable/wmo_0_day"
-                android:contentDescription="@string/wmo0"/>
+                android:contentDescription="@string/wmo0"
+                android:src="@drawable/wmo_0_day" />
 
             <LinearLayout
                 android:id="@+id/weather_widget_details"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:orientation="vertical">
+                android:paddingEnd="8dp">
+
                 <TextView
                     android:id="@+id/weather_widget_large_location_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/unknownLocation"
                     android:textColor="@color/white"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/weather_widget_weather_description"
@@ -54,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/wmo0"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -62,24 +64,25 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/weather_widget_small_location_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:text="@string/unknownLocation"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/weather_widget_temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="16dp"
                     android:text="--°C"
                     android:textColor="@color/white"
                     android:textSize="32sp"
-                    android:drawablePadding="16dp"
-                    tools:ignore="HardcodedText"/>
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/weather_widget_maxmin_temperatures"
@@ -88,7 +91,7 @@
                     android:text="--°C/--°C"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    tools:ignore="HardcodedText"/>
+                    tools:ignore="HardcodedText" />
             </LinearLayout>
         </LinearLayout>
 
@@ -99,72 +102,78 @@
             android:layout_marginTop="8dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/weather_widget_day_0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableBottom="@drawable/wmo_0_day"
+                android:gravity="center_horizontal"
                 android:text="00\n--°C/--°C"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:gravity="center_horizontal"
-                android:drawableBottom="@drawable/wmo_0_day"
-                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml"/>
+                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
+
             <TextView
                 android:id="@+id/weather_widget_day_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableBottom="@drawable/wmo_0_day"
+                android:gravity="center_horizontal"
                 android:text="01\n--°C/--°C"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:gravity="center_horizontal"
-                android:drawableBottom="@drawable/wmo_0_day"
-                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml"/>
+                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
+
             <TextView
                 android:id="@+id/weather_widget_day_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableBottom="@drawable/wmo_0_day"
+                android:gravity="center_horizontal"
                 android:text="02\n--°C/--°C"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:gravity="center_horizontal"
-                android:drawableBottom="@drawable/wmo_0_day"
-                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml"/>
+                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
+
             <TextView
                 android:id="@+id/weather_widget_day_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableBottom="@drawable/wmo_0_day"
+                android:gravity="center_horizontal"
                 android:text="03\n--°C/--°C"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:gravity="center_horizontal"
-                android:drawableBottom="@drawable/wmo_0_day"
-                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml"/>
+                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
+
             <TextView
                 android:id="@+id/weather_widget_day_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableBottom="@drawable/wmo_0_day"
+                android:gravity="center_horizontal"
                 android:text="04\n--°C/--°C"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:gravity="center_horizontal"
-                android:drawableBottom="@drawable/wmo_0_day"
-                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml"/>
+                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
+
             <TextView
                 android:id="@+id/weather_widget_day_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableBottom="@drawable/wmo_0_day"
+                android:gravity="center_horizontal"
                 android:text="05\n--°C/--°C"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:gravity="center_horizontal"
-                android:drawableBottom="@drawable/wmo_0_day"
-                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml"/>
+                tools:ignore="HardcodedText,UseCompatTextViewDrawableXml" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

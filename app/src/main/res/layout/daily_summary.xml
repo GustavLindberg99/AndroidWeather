@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableRow
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <Button
-        android:textColor="@color/white"
         android:id="@+id/name"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="@string/today"
-        android:gravity="center_vertical|left"
         android:layout_gravity="center_vertical|left"
-        style="?android:attr/buttonBarButtonStyle"
-        tools:ignore="RtlHardcoded"/>
+        android:gravity="center_vertical|left"
+        android:text="@string/today"
+        android:textColor="@color/white"
+        tools:ignore="RtlHardcoded" />
+
     <ImageView
         android:id="@+id/weather"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/wmo_0_day"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:contentDescription="@string/wmo0"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+        android:src="@drawable/wmo_0_day" />
+
     <TextView
-        android:textColor="@color/white"
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="--/--"
-        android:gravity="center_vertical"
         android:layout_gravity="center_vertical|right"
+        android:gravity="center_vertical"
         android:paddingRight="16dp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry"/>
+        android:text="--/--"
+        android:textColor="@color/white"
+        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
 </TableRow>

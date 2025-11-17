@@ -18,6 +18,7 @@ import java.text.DateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
+@Suppress("AddExplicitTargetToParameterAnnotation")
 abstract class Widget(
     @LayoutRes private val _layout: Int,
     @IdRes private val _layoutId: Int,
@@ -26,42 +27,59 @@ abstract class Widget(
     @IdRes private val _background: Int,
     @IdRes private val _clock: Int,
     @IdRes private val _date: Int
-) : AppWidgetProvider(){
+) : AppWidgetProvider() {
     private val _viewVisibilities = HashMap<Int, HashMap<Int, Int>>()
     private val _fontSizes = HashMap<Int, HashMap<Int, Int>>()
 
-    override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, newOptions: Bundle){
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle
+    ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
-        this.onUpdate(context, appWidgetManager, intArrayOf(appWidgetId))    //This automatically calls onResize
+        this.onUpdate(
+            context,
+            appWidgetManager,
+            intArrayOf(appWidgetId)
+        )    //This automatically calls onResize
     }
 
-    override fun onReceive(context: Context, intent: Intent){
+    override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        if(intent.action.contentEquals("com.sec.android.widgetapp.APPWIDGET_RESIZE")){
+        if (intent.action.contentEquals("com.sec.android.widgetapp.APPWIDGET_RESIZE")) {
             val appWidgetId = intent.getIntExtra("widgetId", 0)
-            if(appWidgetId > 0){
-                this.onUpdate(context, AppWidgetManager.getInstance(context), intArrayOf(appWidgetId))    //This automatically calls onResize
+            if (appWidgetId > 0) {
+                this.onUpdate(
+                    context,
+                    AppWidgetManager.getInstance(context),
+                    intArrayOf(appWidgetId)
+                )    //This automatically calls onResize
             }
         }
     }
 
-    protected open fun onResize(appWidgetId: Int, newWidth: Int, newHeight: Int){}
+    protected open fun onResize(appWidgetId: Int, newWidth: Int, newHeight: Int) {}
 
-    protected fun setViewVisibility(appWidgetId: Int, @IdRes viewId: Int, visibility: Int){
+    protected fun setViewVisibility(appWidgetId: Int, @IdRes viewId: Int, visibility: Int) {
         val visibilityMap: HashMap<Int, Int> = this._viewVisibilities[appWidgetId] ?: HashMap()
         visibilityMap[viewId] = visibility
         this._viewVisibilities[appWidgetId] = visibilityMap
     }
 
-    protected fun setFontSize(appWidgetId: Int, @IdRes textViewId: Int, fontSize: Int){
+    protected fun setFontSize(appWidgetId: Int, @IdRes textViewId: Int, fontSize: Int) {
         val fontSizeMap: HashMap<Int, Int> = this._fontSizes[appWidgetId] ?: HashMap()
         fontSizeMap[textViewId] = fontSize
         this._fontSizes[appWidgetId] = fontSizeMap
     }
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray){
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
         //Send the resize event so that we know the size of the widget
-        for(appWidgetId in appWidgetIds){
+        for (appWidgetId in appWidgetIds) {
             val options: Bundle = appWidgetManager.getAppWidgetOptions(appWidgetId)
             val widgetWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
             val widgetHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
@@ -70,62 +88,112 @@ abstract class Widget(
 
         //Update the weather
         val currentLocation: City? = City.currentLocation(context)
-        val location: City = if(currentLocation != null) currentLocation else {
+        val location: City = if (currentLocation != null) currentLocation
+        else {
             val cities = City.listFromPreferences(context)
-            if(cities.isEmpty()){
+            if (cities.isEmpty()) {
                 return
             }
             cities[0]
         }
-        updateWeather(context, appWidgetManager, appWidgetIds, location)    //Update from cache so that it shows something reasonable while waiting for the server
-        location.updateWeatherFromServer({this.updateWeather(context, appWidgetManager, appWidgetIds, location)}, {})
+        updateWeather(
+            context,
+            appWidgetManager,
+            appWidgetIds,
+            location
+        )    //Update from cache so that it shows something reasonable while waiting for the server
+        location.updateWeatherFromServer({
+            this.updateWeather(
+                context,
+                appWidgetManager,
+                appWidgetIds,
+                location
+            )
+        }, {})
     }
 
     @SuppressLint("DiscouragedApi")
-    private fun updateWeather(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray, location: City){
+    private fun updateWeather(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray,
+        location: City
+    ) {
         val data: WeatherData = location.weatherData ?: return
         val now: Calendar = Calendar.getInstance()
         now.timeZone = TimeZone.getTimeZone(location.timezone)
         val dayOrNight: String = data.currentDayOrNight()
 
         //There may be multiple widgets active, so update all of them
-        for(appWidgetId in appWidgetIds){
+        for (appWidgetId in appWidgetIds) {
             val views = RemoteViews(context.packageName, this._layout)
 
             //Set the onclick listener
             val weatherIntent = Intent(context, MainActivity::class.java)
-            val pendingWeatherIntent: PendingIntent = PendingIntent.getActivity(context, 0, weatherIntent, PendingIntent.FLAG_IMMUTABLE)
+            val pendingWeatherIntent: PendingIntent =
+                PendingIntent.getActivity(context, 0, weatherIntent, PendingIntent.FLAG_IMMUTABLE)
             views.setOnClickPendingIntent(this._layoutId, pendingWeatherIntent)
-            if(this._clock != 0){
+            if (this._clock != 0) {
                 val clockIntent = Intent(AlarmClock.ACTION_SHOW_ALARMS)
-                val pendingClockIntent = PendingIntent.getActivity(context, 0, clockIntent, PendingIntent.FLAG_IMMUTABLE)
+                val pendingClockIntent =
+                    PendingIntent.getActivity(context, 0, clockIntent, PendingIntent.FLAG_IMMUTABLE)
                 views.setOnClickPendingIntent(_clock, pendingClockIntent)
             }
 
             //Update the weather
             setLocationName(views, location.name)
-            @DrawableRes val weatherImage = context.resources.getIdentifier("wmo_" + data.currentWeatherCode + dayOrNight, "drawable", context.packageName)
-            val weatherDescription: String = context.getString(context.resources.getIdentifier("wmo" + data.currentWeatherCode, "string", context.packageName))
+            @DrawableRes val weatherImage = context.resources.getIdentifier(
+                "wmo_" + data.currentWeatherCode + dayOrNight,
+                "drawable",
+                context.packageName
+            )
+            val weatherDescription: String = context.getString(
+                context.resources.getIdentifier(
+                    "wmo" + data.currentWeatherCode,
+                    "string",
+                    context.packageName
+                )
+            )
             this.setCurrentWeather(views, weatherImage, weatherDescription)
-            views.setTextViewText(this._currentTemperature, Settings.UnitFormatter.temperature(context, data.currentTemperature))
+            views.setTextViewText(
+                this._currentTemperature,
+                Settings.UnitFormatter.temperature(context, data.currentTemperature)
+            )
             @DrawableRes val weatherBackground = getBackgroundResource(context, data)
             views.setImageViewResource(this._background, this.getBackground(weatherBackground))
-            views.setTextViewText(this._maxminTemperatures, Settings.UnitFormatter.temperature(context, data.minTemperature[0]) + "/" + Settings.UnitFormatter.temperature(context, data.maxTemperature[0]))
-            this.setDailyWeather(context, views, data.now, data.maxTemperature, data.minTemperature, data.dailyWeatherCode)
-            views.setTextViewText(this._date, DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(Calendar.getInstance().timeInMillis))
+            views.setTextViewText(
+                this._maxminTemperatures,
+                Settings.UnitFormatter.temperature(
+                    context,
+                    data.minTemperature[0]
+                ) + "/" + Settings.UnitFormatter.temperature(context, data.maxTemperature[0])
+            )
+            this.setDailyWeather(
+                context,
+                views,
+                data.now,
+                data.maxTemperature,
+                data.minTemperature,
+                data.dailyWeatherCode
+            )
+            views.setTextViewText(
+                this._date,
+                DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())
+                    .format(Calendar.getInstance().timeInMillis)
+            )
 
             //Set the visibilities of the views
             val viewVisibilities = this._viewVisibilities[appWidgetId]
-            if(viewVisibilities != null){
-                for((key, value) in viewVisibilities){
+            if (viewVisibilities != null) {
+                for ((key, value) in viewVisibilities) {
                     views.setViewVisibility(key, value)
                 }
             }
 
             //Set the font sizes of the text views
             val fontSizes = this._fontSizes[appWidgetId]
-            if(fontSizes != null){
-                for((key, value) in fontSizes){
+            if (fontSizes != null) {
+                for ((key, value) in fontSizes) {
                     views.setTextViewTextSize(key, TypedValue.COMPLEX_UNIT_SP, value.toFloat())
                 }
             }
@@ -137,6 +205,18 @@ abstract class Widget(
     @DrawableRes
     protected abstract fun getBackground(@DrawableRes weatherBackground: Int): Int
     protected abstract fun setLocationName(views: RemoteViews, locationName: String)
-    protected abstract fun setCurrentWeather(views: RemoteViews, @DrawableRes weatherImage: Int, weatherDescription: String)
-    protected abstract fun setDailyWeather(context: Context, views: RemoteViews, now: Calendar, maxTemperatures: List<Double>, minTemperatures: List<Double>, weatherCodes: List<Int>)
+    protected abstract fun setCurrentWeather(
+        views: RemoteViews,
+        @DrawableRes weatherImage: Int,
+        weatherDescription: String
+    )
+
+    protected abstract fun setDailyWeather(
+        context: Context,
+        views: RemoteViews,
+        now: Calendar,
+        maxTemperatures: List<Double>,
+        minTemperatures: List<Double>,
+        weatherCodes: List<Int>
+    )
 }
