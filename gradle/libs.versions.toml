@@ -1,17 +1,14 @@
 [versions]
-agp = "8.13.1"
-appcompatVersion = "1.6.1"
-commonsText = "1.9"
-firebaseCrashlyticsBuildtools = "2.9.9"
-guava = "30.1.1-jre"
-kotlin = "1.9.24"
-coreKtx = "1.15.0"
-espressoCore = "3.6.1"
-appcompat = "1.7.0"
+agp = "9.0.1"
+appcompatVersion = "1.7.1"
+commonsText = "1.15.0"
+firebaseCrashlyticsBuildtools = "3.0.6"
+guava = "33.5.0-jre"
+kotlin = "2.3.10"
+coreKtx = "1.17.0"
 legacySupportV4 = "1.0.0"
-material = "1.12.0"
+material = "1.13.0"
 volley = "1.2.1"
-zstdJni = "1.5.0-4"
 
 [libraries]
 androidx-appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
@@ -20,11 +17,8 @@ androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", ver
 commons-text = { module = "org.apache.commons:commons-text", version.ref = "commonsText" }
 firebase-crashlytics-buildtools = { module = "com.google.firebase:firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 volley = { module = "com.android.volley:volley", version.ref = "volley" }
-zstd-jni = { module = "com.github.luben:zstd-jni", version.ref = "zstdJni" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
