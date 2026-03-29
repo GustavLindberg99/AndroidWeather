@@ -3,18 +3,9 @@ package io.github.gustavlindberg99.weather
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import org.json.JSONException
-import org.json.JSONObject
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
+import io.github.gustavlindberg99.weather.WeatherData.Companion.getWeatherData
+import io.github.gustavlindberg99.weather.WeatherData.Companion.putWeatherData
+import java.util.TimeZone
 
 class City(
     private val _context: Context,
@@ -24,8 +15,10 @@ class City(
     val timezone: String,
     var weatherData: WeatherData? = null
 ) {
-    private var _id: Int? =
-        null    //null if the location isn't saved, -1 if it's the current location
+    /**
+     * Position of the city in the city list. Null if the location isn't saved, -1 if it's the current location.
+     */
+    private var _id: Int? = null
 
     private object Attribute {
         const val NAME = "name"
@@ -52,6 +45,13 @@ class City(
             if (id == -1) CACHED_WEATHER_AT_CURRENT_LOCATION else "cachedWeather$id"
     }
 
+    /**
+     * Checks for equality. Two saved cities are considered equal if they have the same ID. If at least one of the cities is unsaved, they're considered equal if they have the same coordinates.
+     *
+     * @param other The other city to compare to.
+     *
+     * @return True if the cities are equal, false otherwise.
+     */
     override fun equals(other: Any?): Boolean {
         if (other !is City) {
             return false
@@ -61,16 +61,24 @@ class City(
         if (thisId == null || otherId == null) {
             return this.latitude == other.latitude && this.longitude == other.longitude
         }
-        return thisId.toInt() == otherId.toInt()
+        return thisId == otherId
     }
 
-    override fun hashCode(): Int {    //This needs to be defined when equals is defined, see https://stackoverflow.com/a/2265637/4284627. This function was generated automatically by Android Studio by clicking on the warning and choosing "generate hashCode".
+    /**
+     * This needs to be defined when equals is defined, see https://stackoverflow.com/a/2265637/4284627. This function was generated automatically by Android Studio by clicking on the warning and choosing "generate hashCode".
+     */
+    override fun hashCode(): Int {
         var result = latitude.hashCode()
         result = 31 * result + longitude.hashCode()
         result = 31 * result + (this._id ?: 0)
         return result
     }
 
+    /**
+     * Gets the city with the same position in the city list as this city had before the city list was updated.
+     *
+     * @return The city with the same position in the city list as this city. If this city is not in the city list, the city itself is returned.
+     */
     fun fromUpdatedList(): City {
         val id: Int = this._id ?: return this
         if (id == -1) {
@@ -83,9 +91,18 @@ class City(
         return this
     }
 
-    val isCurrentLocation: Boolean
-        get() = this._id != null && this._id == -1
+    /**
+     * Checks if the city is the current location.
+     *
+     * @return True if the city is the current location, false otherwise.
+     */
+    fun isCurrentLocation(): Boolean {
+        return this._id != null && this._id == -1
+    }
 
+    /**
+     * Saves the city as the current location.
+     */
     fun saveAsCurrentLocation() {
         val preferenceEditor: SharedPreferences.Editor =
             this._context.getSharedPreferences("cities", Context.MODE_PRIVATE).edit()
@@ -101,6 +118,9 @@ class City(
         this._id = -1
     }
 
+    /**
+     * Saves the city as a new location at the end of the city list.
+     */
     fun addAsNewLocation() {
         val preferences: SharedPreferences =
             this._context.getSharedPreferences("cities", Context.MODE_PRIVATE)
@@ -116,6 +136,9 @@ class City(
         preferenceEditor.apply()
     }
 
+    /**
+     * Removes the city from the city list.
+     */
     fun removeLocation() {
         val id: Int? = this._id
         if (id == null || id == -1) {
@@ -151,6 +174,9 @@ class City(
         this._id = null
     }
 
+    /**
+     * Updates the weather data cached in the SharedPreferences with the weather data stored in this City object.
+     */
     fun updateCachedWeather() {
         val id: Int = this._id ?: return
         val preferenceEditor: SharedPreferences.Editor =
@@ -159,80 +185,19 @@ class City(
         preferenceEditor.apply()
     }
 
+    /**
+     * Updates the weather data from the server.
+     *
+     * @param successCallback   A callback that is run when the weather data is successfully updated.
+     * @param errorCallback     A callback that is run when an error occurs while updating the weather data.
+     */
     fun updateWeatherFromServer(successCallback: () -> Unit, errorCallback: (String) -> Unit) {
-        val urls = listOf(
-            String.format(
-                "https://api.open-meteo.com/v1/forecast" +
-                "?latitude=%s&longitude=%s&timezone=%s&current_weather=true" +
-                "&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,precipitation,pressure_msl,uv_index,cloudcover_low,cloudcover_mid,dewpoint_2m,winddirection_10m,windspeed_10m,precipitation_probability,is_day" +
-                "&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset",
-                URLEncoder.encode(latitude.toString(), StandardCharsets.UTF_8.name()),
-                URLEncoder.encode(longitude.toString(), StandardCharsets.UTF_8.name()),
-                URLEncoder.encode(timezone, StandardCharsets.UTF_8.name())
-            ), String.format(
-                "https://air-quality-api.open-meteo.com/v1/air-quality" +
-                "?latitude=%s&longitude=%s&timezone=%s&current_weather=false" +
-                "&hourly=european_aqi,us_aqi",
-                URLEncoder.encode(latitude.toString(), StandardCharsets.UTF_8.name()),
-                URLEncoder.encode(longitude.toString(), StandardCharsets.UTF_8.name()),
-                URLEncoder.encode(timezone, StandardCharsets.UTF_8.name())
-            ), String.format(
-                "https://marine-api.open-meteo.com/v1/marine" +
-                "?latitude=%s&longitude=%s&timezone=%s&hourly=sea_surface_temperature",
-                URLEncoder.encode(latitude.toString(), StandardCharsets.UTF_8.name()),
-                URLEncoder.encode(longitude.toString(), StandardCharsets.UTF_8.name()),
-                URLEncoder.encode(timezone, StandardCharsets.UTF_8.name())
-            )
-        )
-
-        val queue: RequestQueue = Volley.newRequestQueue(this._context)
-        val responses = mutableListOf<String>()
-
-        val handleError = { e: Exception ->
-            //The error handler is also run on 4xx errors (this was unclear from the documentation so I tested it)
-            queue.cancelAll { true }
-            val errorMessage =
-                if (e is VolleyError) this._context.getString(R.string.noInternetConnection)
-                else String.format(
-                    this._context.getString(R.string.serverError),
-                    e.message ?: this._context.getString(R.string.unknownError)
-                )
-            errorCallback(errorMessage)
-        }
-
-        val handleResponse = { lastResponse: String ->
-            responses.add(lastResponse)
-            if (responses.size == urls.size) {
-                try {
-                    //Merge different responses into one JSON object
-                    val data = JSONObject()
-                    for (response in responses) {
-                        data.mergeWith(JSONObject(response))
-                    }
-
-                    //Fix the current time so that it shows the actual current time rather than the last whole hour
-                    val currentWeather = data.getJSONObject("current_weather")
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
-                    dateFormat.timeZone = TimeZone.getTimeZone(timezone)
-                    currentWeather.put("time", dateFormat.format(Date()).replace(" ", "T"))
-
-                    //Save the JSON data
-                    this.weatherData = WeatherData(data.toString(), timezone)
-                    this.updateCachedWeather()
-                    successCallback()
-                }
-                catch (e: JSONException) {
-                    handleError(e)
-                }
-                catch (e: ParseException) {
-                    handleError(e)
-                }
-            }
-        }
-
-        for (url in urls) {
-            queue.add(StringRequest(Request.Method.GET, url, handleResponse, handleError))
-        }
+        val fetcher = DataFetcher(this._context, this, { weatherData ->
+            this.weatherData = weatherData
+            this.updateCachedWeather()
+            successCallback()
+        }, errorCallback)
+        fetcher.fetch()
     }
 
     fun toBundle(): Bundle {

@@ -180,7 +180,7 @@ class WeatherFragment : Fragment() {
             return
         }
         this._locationView.text = this._city.name
-        if (this._city.isCurrentLocation) {
+        if (this._city.isCurrentLocation()) {
             this._locationView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.position, 0, 0, 0)
         }
         if (data == null) {

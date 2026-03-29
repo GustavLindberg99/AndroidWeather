@@ -46,6 +46,42 @@ class WeatherData(private val _json: String, timezone: String) {
     val minTemperature: List<Double>
     val dailyWeatherCode: List<Int>
 
+    companion object {
+        fun SharedPreferences.getWeatherData(key: String, timezone: String): WeatherData? {
+            val json: String = this.getString(key, null) ?: return null
+            return try {
+                WeatherData(json, timezone)
+            }
+            catch (_: JSONException) {
+                null
+            }
+            catch (_: ParseException) {
+                null
+            }
+        }
+
+        fun SharedPreferences.Editor.putWeatherData(key: String, weatherData: WeatherData?) {
+            this.putString(key, weatherData?._json)
+        }
+
+        fun Bundle.getWeatherData(key: String, timezone: String): WeatherData? {
+            val json: String = this.getString(key) ?: return null
+            return try {
+                WeatherData(json, timezone)
+            }
+            catch (_: JSONException) {
+                null
+            }
+            catch (_: ParseException) {
+                null
+            }
+        }
+
+        fun Bundle.putWeatherData(key: String, weatherData: WeatherData?) {
+            this.putString(key, weatherData?._json)
+        }
+    }
+
     init {
         val data = JSONObject(this._json)
         val currentWeather = data.getJSONObject("current_weather")
@@ -226,14 +262,6 @@ class WeatherData(private val _json: String, timezone: String) {
         else {
             "_night"
         }
-
-    fun putToBundle(bundle: Bundle, key: String?) {
-        bundle.putString(key, _json)
-    }
-
-    fun putToPreferences(preferencesEditor: SharedPreferences.Editor, key: String?) {
-        preferencesEditor.putString(key, _json)
-    }
 }
 
 
@@ -351,6 +379,14 @@ private fun combinedWeatherCode(weatherCodes: List<Int>): Int {
     return weatherCodes.average().roundToInt()
 }
 
+/**
+ * Calculates the cloud cover to display given the cloud covers at low and mid altitudes.
+ *
+ * @param cloudCoverLow   The cloud cover at low altitudes in percent.
+ * @param cloudCoverMid   The cloud cover at mid altitudes in percent.
+ *
+ * @return The cloud cover to display in percent.
+ */
 private fun totalCloudCover(cloudCoverLow: Int, cloudCoverMid: Int): Int {
     val sunCoverLow = 100 - cloudCoverLow
     val sunCoverMid = 100 - cloudCoverMid
@@ -371,7 +407,11 @@ private fun totalCloudCover(cloudCoverLow: Int, cloudCoverMid: Int): Int {
  *
  * @return A weather code which is more accurate.
  */
-private fun weatherCodeFromData(weatherCode: Int, cloudCover: Int, precipitation: Double): Int {
+private fun weatherCodeFromData(
+    weatherCode: Int,
+    cloudCover: Int,
+    precipitation: Double
+): Int {
     if (listOf(45, 48, 56, 57, 66, 67, 77, 95, 96, 99).contains(weatherCode)) {
         return weatherCode    //For fog, thunderstorms, freezing rain/drizzle and snow grains, just keep the weather code given by the API
     }
@@ -408,38 +448,4 @@ private fun weatherCodeFromData(weatherCode: Int, cloudCover: Int, precipitation
         else -> 3
     }
     else 3
-}
-
-fun SharedPreferences.getWeatherData(key: String, timezone: String): WeatherData? {
-    val json: String = this.getString(key, null) ?: return null
-    return try {
-        WeatherData(json, timezone)
-    }
-    catch (_: JSONException) {
-        null
-    }
-    catch (_: ParseException) {
-        null
-    }
-}
-
-fun SharedPreferences.Editor.putWeatherData(key: String, weatherData: WeatherData?) {
-    weatherData?.putToPreferences(this, key)
-}
-
-fun Bundle.getWeatherData(key: String, timezone: String): WeatherData? {
-    val json: String = this.getString(key) ?: return null
-    return try {
-        WeatherData(json, timezone)
-    }
-    catch (_: JSONException) {
-        null
-    }
-    catch (_: ParseException) {
-        null
-    }
-}
-
-fun Bundle.putWeatherData(key: String, weatherData: WeatherData?) {
-    weatherData?.putToBundle(this, key)
 }

@@ -61,7 +61,7 @@ class CityList : AppCompatActivity() {
         //City name
         val cityName: TextView = locationBar.findViewById(R.id.city_name)
         cityName.text = city.name
-        if (city.isCurrentLocation) {
+        if (city.isCurrentLocation()) {
             cityName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.position, 0, 0, 0)
         }
 
@@ -86,7 +86,7 @@ class CityList : AppCompatActivity() {
         //Drag to delete the location
         val locationBarContainer: LinearLayout = this.findViewById(R.id.location_bar_container)
         val deleteButton: ImageButton = locationBar.findViewById(R.id.delete_city)
-        if (city.isCurrentLocation) {
+        if (city.isCurrentLocation()) {
             deleteButton.visibility = View.INVISIBLE
         }
         else {
