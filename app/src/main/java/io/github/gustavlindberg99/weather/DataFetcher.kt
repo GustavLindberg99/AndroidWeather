@@ -128,12 +128,16 @@ class DataFetcher(
     public fun fetch() {
         for (url in this._urls) {
             this._queue.add(
-                StringRequest(
+                object : StringRequest(
                     Request.Method.GET,
                     url,
-                    this::handleResponse,
-                    this::handleError
-                )
+                    this@DataFetcher::handleResponse,
+                    this@DataFetcher::handleError
+                ) {
+                    override fun getHeaders(): Map<String, String> = mapOf(
+                        "User-Agent" to "AndroidWeather/${BuildConfig.VERSION_NAME} (+https://github.com/GustavLindberg99/AndroidWeather)"
+                    )
+                }
             )
         }
     }
