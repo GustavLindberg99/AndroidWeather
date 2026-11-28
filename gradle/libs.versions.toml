@@ -1,13 +1,13 @@
 [versions]
-agp = "9.0.1"
-appcompatVersion = "1.7.1"
+agp = "9.5.3"
+appcompatVersion = "1.8.0"
 commonsText = "1.15.0"
-firebaseCrashlyticsBuildtools = "3.0.6"
-guava = "33.5.0-jre"
-kotlin = "2.3.10"
-coreKtx = "1.17.0"
+firebaseCrashlyticsBuildtools = "3.0.8"
+guava = "33.8.0-jre"
+kotlin = "2.4.21"
+coreKtx = "1.19.1"
 legacySupportV4 = "1.0.0"
-material = "1.13.0"
+material = "1.14.0"
 volley = "1.2.1"
 
 [libraries]
